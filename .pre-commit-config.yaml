@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+  - repo: local
+    hooks:
+    - id: black
+      name: black
+      description: "Black: The uncompromising Python code formatter"
+      entry: black
+      language: python
+      types: [python]
+    - id: isort
+      name: isort
+      description: "isort your imports, so you don't have to"
+      entry: isort
+      language: python
+      types: [python]
+    - id: pylint
+      name: pylint
+      description: "Pylint: Python code static checker"
+      entry: pylint
+      language: system
+      types: [python]
+      args:
+        [
+          "-rn", # Only display messages
+          "-sn", # Don't display the score
+        ]
+    - id: mypy
+      name: Run mypy
+      description: "Mypy: Python type checker"
+      entry: mypy
+      language: system
+      types: [python]
