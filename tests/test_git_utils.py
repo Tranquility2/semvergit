@@ -6,7 +6,7 @@ from typing import List, TypeVar
 from git import Repo
 from pytest import MonkeyPatch, mark
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags, pull_remote
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote
 
 T = TypeVar("T")
 
@@ -65,15 +65,19 @@ def test_pull_remote() -> None:
 
 
 @mark.parametrize(
-    "test_tags",
+    "test_tags, prefix, expected",
     [
-        ([]),
-        (["v0.0.1"]),
-        (["v0.0.1", "v0.0.2"]),
+        ([], "v", []),
+        (["v0.0.1"], "v", ["v0.0.1"]),
+        (["v0.0.1", "v0.0.2"], "v", ["v0.0.1", "v0.0.2"]),
+        (["0.0.1"], "", ["0.0.1"]),
+        (["0.0.1", "0.0.2"], "", ["0.0.1", "0.0.2"]),
+        (["v0.0.1", "new123", "new_version"], "v", ["v0.0.1"]),
+        (["v0.0.1", "dev123", "dev_version"], "dev", ["dev123", "dev_version"]),
     ],
 )
-def test_get_tags(test_tags: List[str]) -> None:
-    """Test get_tags."""
+def test_get_tags_with_prefix(test_tags: List[str], prefix: str, expected: List[str]) -> None:
+    """Test get_tags_with_prefix."""
 
     test_repo = Repo()
 
@@ -86,9 +90,9 @@ def test_get_tags(test_tags: List[str]) -> None:
 
     mock_tags = [TagMock(tag) for tag in test_tags]
     MonkeyPatch().setattr("semvergit.git_utils.Repo.tags", mock_tags)
-    fetched_tags = get_tags(test_repo)
+    fetched_tags = get_tags_with_prefix(test_repo, prefix)
     if fetched_tags:
         for tag in fetched_tags:
-            assert tag.name in test_tags
+            assert tag in expected
     else:
-        assert fetched_tags == test_tags
+        assert fetched_tags == expected

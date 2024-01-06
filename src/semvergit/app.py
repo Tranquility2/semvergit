@@ -1,6 +1,6 @@
 """SemverGit app module."""
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags, pull_remote
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote
 
 
 class SemverGit:  # pylint: disable=too-few-public-methods
@@ -12,4 +12,4 @@ class SemverGit:  # pylint: disable=too-few-public-methods
         repo = get_repo()
         pull_remote(repo)
         branch = get_active_branch(repo)  # pylint: disable=unused-variable
-        tags = get_tags(repo)  # pylint: disable=unused-variable
+        tags = get_tags_with_prefix(repo)  # pylint: disable=unused-variable

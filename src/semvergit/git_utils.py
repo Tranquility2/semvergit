@@ -1,4 +1,6 @@
 """Git utilities."""
+from typing import List
+
 from git import Head, Repo
 from loguru import logger
 
@@ -24,8 +26,10 @@ def pull_remote(repo: Repo) -> None:
     logger.debug(f"Pulled remote {remote.name}")
 
 
-def get_tags(repo: Repo) -> list:
-    """Get tags."""
+def get_tags_with_prefix(repo: Repo, prefix: str = "v") -> List[str]:
+    """Get tags as list of strings."""
     tags = repo.tags
-    logger.debug(f"Fetched tags: {tags}")
-    return tags
+    results = [tag.name for tag in tags if tag.name.startswith(prefix)]
+    logger_detail = f"with prefix -{prefix}-" if prefix else "no prefix"
+    logger.debug(f"Fetched tags: {results} ({logger_detail})")
+    return results
