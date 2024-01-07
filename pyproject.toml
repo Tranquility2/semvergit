@@ -2,12 +2,11 @@
 name = "semvergit"
 description = "Manage your project's version numbers."
 requires-python = ">=3.8"
-authors = [
-    {name = "Roy Moore", email="roy@moore.co.il"}
-]
+authors = [{ name = "Roy Moore", email = "roy@moore.co.il" }]
 dynamic = ["version"]
 dependencies = [
     "gitpython==3.1.40",
+    "semver==3.0.2",
     "loguru==0.7.2",
     "click==8.1.7",
 ]
@@ -42,10 +41,7 @@ fail-under = 10.0
 max-line-length = 120
 
 [tool.coverage.run]
-omit = [
-    "semvergit/tests/*",
-    "src/semvergit/__main__.py",
-]
+omit = ["semvergit/tests/*", "src/semvergit/__main__.py"]
 
 [tool.coverage.report]
 fail_under = 100
