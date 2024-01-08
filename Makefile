@@ -9,7 +9,8 @@ pip-clean:
 	python3 -m pip uninstall -y -r <(pip freeze)
 
 clean:
-	rm -rf **/__pycache__ **/**/__pycache__ .pytest_cache/ dist/ .mypy_cache/ .coverage **/*.egg-info build
+	rm -rf **/__pycache__ **/**/__pycache__ .pytest_cache/ \
+	dist/ .mypy_cache/ .coverage **/*.egg-info build
 
 check-black:
 	python3 -m black --diff --check .
@@ -23,7 +24,7 @@ fix-format:
 	python3 -m black .
 	python3 -m isort .
 
-lint:
+check-lint:
 	python3 -m pylint --reports=True semvergit
 
 pytest:
@@ -35,5 +36,13 @@ coverage:
 
 tests: | pytest coverage
 
-mypy:
+check-mypy:
 	python3 -m mypy	.
+
+build:
+	pip install --upgrade build
+	python -m build
+
+ publish:
+	pip install --upgrade twine
+	twine upload dist/*
