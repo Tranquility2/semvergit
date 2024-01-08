@@ -19,6 +19,6 @@ def test_cli(caplog: LogCaptureFixture) -> None:
     """Test CLI."""
     runner = CliRunner()
     MonkeyPatch().setattr("semvergit.cli.SemverGit", MockSemverGit)
-    result = runner.invoke(cli)
+    result = runner.invoke(cli, ["--bump_type", "patch"])
     assert result.exit_code == 0
     assert caplog.messages == [f"New version: {UPDATE_VERSION}"]
