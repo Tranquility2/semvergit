@@ -9,13 +9,16 @@ from loguru import logger
 from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote
 
 
-class BumpType(Enum):
+class BumpType(str, Enum):
     """BumpType."""
 
-    MAJOR = 1
-    MINOR = 2
-    PATCH = 3
-    PRERELEASE = 4
+    MAJOR = "major"
+    MINOR = "minor"
+    PATCH = "patch"
+    PRERELEASE = "prerelease"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 class SemverGit:  # pylint: disable=too-few-public-methods

@@ -1,7 +1,7 @@
 """Test app."""
 import semver
 
-from semvergit.app import SemverGit
+from semvergit.app import BumpType, SemverGit
 
 
 def test_app() -> None:
@@ -25,4 +25,4 @@ def test_app_update() -> None:
     svg = SemverGit()
     test_version = semver.VersionInfo(1, 1, 1)
     svg.latest_version = test_version
-    assert svg.update(bump_type="patch") == str(semver.VersionInfo(1, 1, 2))
+    assert svg.update(bump_type=str(BumpType.PATCH)) == str(semver.VersionInfo(1, 1, 2))

@@ -9,5 +9,5 @@ from semvergit.app import BumpType, SemverGit
 def cli() -> None:
     """CLI for semvergit."""
     svg = SemverGit()
-    new_version = svg.update(bump_type=str(BumpType.PATCH))
+    new_version = svg.update(str(BumpType.PATCH))
     logger.success(f"New version: {new_version}")
