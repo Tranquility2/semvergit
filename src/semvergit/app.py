@@ -1,6 +1,7 @@
 """SemverGit application module."""
 
 from enum import Enum
+from importlib import metadata
 from typing import List
 
 import semver
@@ -26,7 +27,7 @@ class SemverGit:  # pylint: disable=too-few-public-methods
 
     def __init__(self, pull_branch: bool = True) -> None:
         """Init."""
-        logger.info("SemverGit")
+        logger.success(f"SemverGit: {metadata.version('semvergit')}")
         self.current_repo = get_repo()
         if pull_branch:
             pull_remote(self.current_repo)

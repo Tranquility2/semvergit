@@ -15,7 +15,6 @@ def get_repo(search_parent_directories: bool = True) -> Repo:
 def get_active_branch(repo: Repo) -> Head:
     """Get active branch."""
     branch = repo.active_branch
-    logger.debug(f"Active branch: {branch.name}")
     return branch
 
 
