@@ -25,3 +25,11 @@ def test_cli(caplog: LogCaptureFixture, bump_type: str) -> None:
     result = runner.invoke(cli, ["--bump_type", bump_type])
     assert result.exit_code == 0
     assert caplog.messages == [f"New version: {BUMP_STRING.substitute(bump_type=bump_type)}"]
+
+
+def test_cli_debug(caplog: LogCaptureFixture) -> None:
+    """Test CLI debug."""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--debug", "--bump_type", "patch"])
+    assert result.exit_code == 0
+    assert caplog.messages == [f"New version: {BUMP_STRING.substitute(bump_type='patch')}"]
