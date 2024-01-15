@@ -1,5 +1,5 @@
 """Git utilities."""
-from typing import List
+from typing import List, Optional
 
 from git import Head, Repo
 from loguru import logger
@@ -32,3 +32,10 @@ def get_tags_with_prefix(repo: Repo, prefix: str = "v") -> List[str]:
     logger_detail = f"with prefix -{prefix}-" if prefix else "no prefix"
     logger.debug(f"Fetched tags: {results} ({logger_detail})")
     return results
+
+
+def set_tag(repo: Repo, tag: str, message: Optional[str] = None) -> str:
+    """Set tag."""
+    new_tag = repo.create_tag(tag, message=message)
+    logger.debug(f"Created tag {tag}")
+    return str(new_tag)

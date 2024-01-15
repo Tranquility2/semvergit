@@ -1,12 +1,12 @@
 """Test git_utils."""
 from __future__ import annotations
 
-from typing import List, TypeVar
+from typing import List, Optional, TypeVar
 
 from git import Repo
 from pytest import MonkeyPatch, mark
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, set_tag
 
 T = TypeVar("T")
 
@@ -96,3 +96,24 @@ def test_get_tags_with_prefix(test_tags: List[str], prefix: str, expected: List[
             assert tag in expected
     else:
         assert fetched_tags == expected
+
+
+@mark.parametrize(
+    "test_tag, test_message",
+    [
+        ("testtag", None),
+        ("testtag", "testmessage"),
+    ],
+)
+def test_set_tag(test_tag: str, test_message: Optional[str]) -> None:
+    """Test set_tag."""
+
+    def mock_create_tag(repo: Repo, tag: str, message: Optional[str] = None) -> str:  # pylint: disable=unused-argument
+        """Mock create_tag."""
+        return tag
+
+    test_repo = Repo()
+
+    MonkeyPatch().setattr("semvergit.git_utils.Repo.create_tag", mock_create_tag)
+    result = set_tag(test_repo, test_tag, test_message)
+    assert result == test_tag
