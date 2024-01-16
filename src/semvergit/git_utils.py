@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from git import Head, Repo
 from loguru import logger
+from semver import VersionInfo
 
 
 def get_repo(search_parent_directories: bool = True) -> Repo:
@@ -34,8 +35,8 @@ def get_tags_with_prefix(repo: Repo, prefix: str = "v") -> List[str]:
     return results
 
 
-def set_tag(repo: Repo, tag: str, message: Optional[str] = None) -> str:
+def set_tag(repo: Repo, tag: str, message: Optional[str] = None) -> VersionInfo:
     """Set tag."""
     new_tag = repo.create_tag(tag, message=message)
     logger.debug(f"Created tag {tag}")
-    return str(new_tag)
+    return new_tag

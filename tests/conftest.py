@@ -64,3 +64,13 @@ def mock_pull_remote(monkeypatch: MonkeyPatch) -> None:
         pass
 
     monkeypatch.setattr("semvergit.app.pull_remote", pull_remote)
+
+
+@pytest.fixture(autouse=True)
+def mock_set_tag(monkeypatch: MonkeyPatch) -> None:
+    """Mock set_tag."""
+
+    def set_tag(repo: Repo, tag: str) -> str:  # pylint: disable=unused-argument
+        return f"mock-set-tag-{tag}"
+
+    monkeypatch.setattr("semvergit.app.set_tag", set_tag)

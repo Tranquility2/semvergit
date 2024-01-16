@@ -1,43 +1,40 @@
 """Test CLI."""
-from string import Template
+from unittest.mock import patch
 
 from click.testing import CliRunner
-from pytest import LogCaptureFixture, MonkeyPatch, mark
+from pytest import mark
 
+from semvergit.app import SemverGit
 from semvergit.cli import cli
 
-BUMP_STRING = Template("<used $bump_type>")
 
-
-class MockSemverGit:  # pylint: disable=too-few-public-methods
-    """Mock SemverGit."""
-
-    def update(self, bump_type: str) -> str:  # pylint: disable=unused-argument
-        """Update."""
-        return BUMP_STRING.substitute(bump_type=bump_type)
-
-
+@mark.parametrize("quiet, dry_run", [(True, True), (True, False), (False, True), (False, False)])
 @mark.parametrize("bump_type", ["major", "minor", "patch", "prerelease"])
-def test_cli(caplog: LogCaptureFixture, bump_type: str) -> None:
+def test_cli(quiet: bool, dry_run: bool, bump_type: str) -> None:
     """Test CLI."""
     runner = CliRunner()
-    MonkeyPatch().setattr("semvergit.cli.SemverGit", MockSemverGit)
-    result = runner.invoke(cli, ["--bump_type", bump_type])
+    args = []
+    if quiet:
+        args.append("--quiet")
+    if dry_run:
+        args.append("--dry_run")
+    args.append("--bump_type")
+    args.append(bump_type)
+    with patch.object(SemverGit, "update", spec=SemverGit) as mock_update:
+        result = runner.invoke(cli, args)
+    mock_update.assert_called_once()
+    assert not result.exception
     assert result.exit_code == 0
-    assert caplog.messages == [f"New version: {BUMP_STRING.substitute(bump_type=bump_type)}"]
 
 
-def test_cli_debug(caplog: LogCaptureFixture) -> None:
+def test_cli_debug() -> None:
     """Test CLI debug."""
     runner = CliRunner()
-    result = runner.invoke(cli, ["--debug", "--bump_type", "patch"])
-    assert result.exit_code == 0
-    assert caplog.messages == [f"New version: {BUMP_STRING.substitute(bump_type='patch')}"]
+    args = ["--debug"]
+    args.append("--bump_type")
+    args.append("patch")
 
-
-def test_cli_quiet() -> None:
-    """Test CLI debug."""
-    runner = CliRunner()
-    result = runner.invoke(cli, ["--quiet", "--bump_type", "patch"])
-    assert result.output == BUMP_STRING.substitute(bump_type="patch")
+    with patch.object(SemverGit, "update", spec=SemverGit) as mock_update:
+        result = runner.invoke(cli, args)
+    mock_update.assert_called_once()
     assert result.exit_code == 0

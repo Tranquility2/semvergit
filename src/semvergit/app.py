@@ -1,5 +1,6 @@
 """SemverGit application module."""
 
+import sys
 from enum import Enum
 from importlib import metadata
 from typing import List
@@ -7,7 +8,7 @@ from typing import List
 import semver
 from loguru import logger
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, set_tag
 
 
 class BumpType(str, Enum):
@@ -24,6 +25,8 @@ class BumpType(str, Enum):
 
 class SemverGit:  # pylint: disable=too-few-public-methods
     """SemverGit."""
+
+    prerelease_token: str = "dev"
 
     def __init__(self, pull_branch: bool = True) -> None:
         """Init."""
@@ -52,8 +55,16 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             return text[len(prefix) :]
         return text
 
-    def update(self, bump_type: str, token: str = "dev") -> str:
+    def update(self, bump_type: str, quiet: bool, dry_run: bool) -> str:
         """Update."""
-        new_version = self.latest_version.next_version(part=bump_type, prerelease_token=token)
+        new_version = self.latest_version.next_version(part=bump_type, prerelease_token=self.prerelease_token)
         logger.info(f"Update from {self.latest_version} with {bump_type} to {new_version}")
-        return str(new_version)
+        if not dry_run:
+            new_tag = set_tag(repo=self.current_repo, tag=str(new_version))
+        else:
+            new_tag = new_version
+        new_tag_str = str(new_tag)
+        logger.success(f"New version: {new_tag_str}")
+        if quiet:
+            sys.stdout.write(new_tag_str)
+        return str(new_tag_str)
