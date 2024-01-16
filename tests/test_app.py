@@ -49,11 +49,13 @@ def test_app_update(  # pylint: disable=too-many-arguments
     """Test app."""
     svg = SemverGit()
     new_version = svg.update(bump_type, quiet=quiet, dry_run=dry_run)
+    expected_version_str = f"{svg.version_prefix}{str(expected_version)}"
     if not dry_run:
-        result_str = f"mock-set-tag-{str(expected_version)}"
+        expected = f"mock-set-tag-{expected_version_str}"
     else:
-        result_str = str(expected_version)
+        expected = expected_version_str
     if quiet:
-        assert capsys.readouterr().out == result_str
-    assert new_version == result_str
+        assert capsys.readouterr().out == expected
+
+    assert new_version == expected
     assert f"New version: {new_version}" in caplog.messages

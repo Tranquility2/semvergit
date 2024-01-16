@@ -12,7 +12,7 @@ from semvergit.log_utils import LogMode, set_logger
 @click.option("--debug", "-d", is_flag=True, help="Debug mode")
 @click.option("--quiet", "-q", is_flag=True, help="Quiet mode")
 @click.option("--bump_type", "-t", type=click.Choice(list(BumpType)), help="Bump Type")
-@click.option("--dry_run", "-n", is_flag=True, help="Dry run", default=True)
+@click.option("--dry_run", "-n", is_flag=True, help="Dry run", default=False)
 def cli(bump_type: str, debug: bool, quiet: bool, dry_run: bool) -> None:
     """CLI for semvergit."""
     if debug:
