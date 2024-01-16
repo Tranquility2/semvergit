@@ -1,23 +1,60 @@
 """Test app."""
-import semver
+
 from pytest import CaptureFixture, LogCaptureFixture, mark
+from semver import VersionInfo
 
 from semvergit.app import BumpType, SemverGit
 
 
-def test_app() -> None:
+@mark.parametrize(
+    "pull_branch, expected",
+    [
+        (
+            False,
+            [
+                VersionInfo(0, 0, 1),
+                VersionInfo(0, 0, 2),
+                VersionInfo(0, 0, 3),
+                VersionInfo(0, 0, 4),
+            ],
+        ),
+        (
+            True,
+            [
+                VersionInfo(0, 0, 1),
+                VersionInfo(0, 0, 2),
+                VersionInfo(0, 0, 3),
+                VersionInfo(0, 0, 4),
+            ],
+        ),
+        (
+            False,
+            [
+                VersionInfo(0, 0, 1),
+                VersionInfo(0, 0, 2),
+                VersionInfo(0, 0, 3),
+                VersionInfo(0, 0, 4),
+            ],
+        ),
+        (
+            True,
+            [
+                VersionInfo(0, 0, 1),
+                VersionInfo(0, 0, 2),
+                VersionInfo(0, 0, 3),
+                VersionInfo(0, 0, 4),
+            ],
+        ),
+    ],
+)
+def test_app(pull_branch: bool, expected: VersionInfo) -> None:
     """Test app."""
 
-    svg = SemverGit()
+    svg = SemverGit(pull_branch=pull_branch)
     assert svg is not None
     assert svg.branch.name == "test_branch"
-    assert svg.versions == [
-        semver.VersionInfo(0, 0, 1),
-        semver.VersionInfo(0, 0, 2),
-        semver.VersionInfo(0, 0, 3),
-        semver.VersionInfo(0, 0, 4),
-    ]
-    assert svg.latest_version == semver.VersionInfo(0, 0, 4)
+    assert svg.versions == expected
+    assert svg.latest_version == VersionInfo(0, 0, 4)
 
 
 @mark.parametrize(
@@ -32,16 +69,16 @@ def test_app() -> None:
 @mark.parametrize(
     "bump_type, expected_version",
     [
-        (str(BumpType.MAJOR), semver.VersionInfo(1, 0, 0)),
-        (str(BumpType.MINOR), semver.VersionInfo(0, 1, 0)),
-        (str(BumpType.PATCH), semver.VersionInfo(0, 0, 5)),
-        (str(BumpType.PRERELEASE), semver.VersionInfo(0, 0, 5, "dev.1")),
+        (str(BumpType.MAJOR), VersionInfo(1, 0, 0)),
+        (str(BumpType.MINOR), VersionInfo(0, 1, 0)),
+        (str(BumpType.PATCH), VersionInfo(0, 0, 5)),
+        (str(BumpType.PRERELEASE), VersionInfo(0, 0, 5, "dev.1")),
     ],
 )
 def test_app_update(  # pylint: disable=too-many-arguments
     caplog: LogCaptureFixture,
     bump_type: str,
-    expected_version: semver.VersionInfo,
+    expected_version: VersionInfo,
     quiet: bool,
     dry_run: bool,
     capsys: CaptureFixture,

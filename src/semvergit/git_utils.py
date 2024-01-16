@@ -40,3 +40,10 @@ def set_tag(repo: Repo, tag: str, message: Optional[str] = None) -> VersionInfo:
     new_tag = repo.create_tag(tag, message=message)
     logger.debug(f"Created tag {tag}")
     return new_tag
+
+
+def push_remote(repo: Repo, tag_str: str) -> None:
+    """Push remote."""
+    remote = repo.remotes.origin
+    remote.push(tag_str)
+    logger.debug(f"Pushed remote {remote.name}")

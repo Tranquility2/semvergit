@@ -6,7 +6,7 @@ from typing import List, Optional, TypeVar
 from git import Repo
 from pytest import MonkeyPatch, mark
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, set_tag
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, push_remote, set_tag
 
 T = TypeVar("T")
 
@@ -117,3 +117,27 @@ def test_set_tag(test_tag: str, test_message: Optional[str]) -> None:
     MonkeyPatch().setattr("semvergit.git_utils.Repo.create_tag", mock_create_tag)
     result = set_tag(test_repo, test_tag, test_message)
     assert result == test_tag
+
+
+def test_push_remote() -> None:
+    """Test push_remote."""
+
+    class RemoteMock:
+        """Remote mock."""
+
+        def __init__(self: T, name: str) -> None:
+            """Init."""
+            self.name = name
+
+        def push(self: T, tag_str: str) -> None:  # pylint: disable=unused-argument
+            """Push."""
+            pass  # pylint: disable=unnecessary-pass
+
+        @property
+        def origin(self: T) -> T:
+            """Origin."""
+            return self
+
+    test_repo = Repo()
+    MonkeyPatch().setattr("semvergit.git_utils.Repo.remotes", RemoteMock("testrepo"))
+    push_remote(test_repo, "testtag")

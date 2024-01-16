@@ -8,7 +8,7 @@ from typing import List
 from loguru import logger
 from semver import VersionInfo
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, set_tag
+from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, push_remote, set_tag
 
 
 class BumpType(str, Enum):
@@ -65,9 +65,10 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             new_tag = set_tag(repo=self.current_repo, tag=new_tag_str)
             logger.debug(f"New tag: {new_tag}")
             new_tag_str = str(new_tag)
-            # self.current_repo.push("origin", self.branch.name, tags=True)
+            logger.info("Pushing...")
+            push_remote(repo=self.current_repo, tag_str=new_tag_str)
         else:
-            logger.info("Dry run, no tag set")
+            logger.warning("Dry run (no tag set or pushed)")
         logger.success(f"New version: {new_tag_str}")
         if quiet:
             sys.stdout.write(new_tag_str)
