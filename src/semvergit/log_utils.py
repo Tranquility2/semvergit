@@ -5,12 +5,15 @@ from enum import Enum
 from loguru import logger
 
 
-class LogMode(Enum):
+class LogMode(str, Enum):
     """Log mode."""
 
-    DEBUG = "DEBUG"
-    STANDARD = "STANDARD"
-    QUIET = "QUIET"
+    DEBUG = "debug"
+    STANDARD = "standard"
+    QUIET = "quiet"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 LOGGER_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{message}</level>"
