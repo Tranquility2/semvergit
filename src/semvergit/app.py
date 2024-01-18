@@ -22,6 +22,11 @@ class BumpType(str, Enum):
     def __str__(self) -> str:
         return self.value
 
+    @classmethod
+    def print_options(cls) -> str:
+        """Print options."""
+        return f"{[str(bump_type) for bump_type in list(cls)]}"
+
 
 class SemverGit:  # pylint: disable=too-few-public-methods
     """SemverGit."""

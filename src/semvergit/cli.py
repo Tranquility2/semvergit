@@ -14,8 +14,7 @@ def validate_log_level(
     try:
         return LogMode(value)
     except ValueError as exp:
-        excepted_values = [str(mode) for mode in list(LogMode)]
-        raise click.BadParameter(f"please select from {excepted_values}") from exp
+        raise click.BadParameter(f"please select from {LogMode.print_options()}") from exp
 
 
 def validate_bump_type(
@@ -25,17 +24,27 @@ def validate_bump_type(
     try:
         return BumpType(value)
     except ValueError as exp:
-        excepted_values = [str(mode) for mode in list(BumpType)]
-        raise click.BadParameter(f"please select from {excepted_values}") from exp
+        raise click.BadParameter(f"please select from {BumpType.print_options()}") from exp
 
 
 @click.group(invoke_without_command=True, no_args_is_help=True)
 @click.version_option()
-@click.option("--dry_run", "-n", is_flag=True, help="Dry run", default=False)
+@click.option("--dry_run", "-d", is_flag=True, help="Dry run", default=False)
 @click.option(
-    "--log_level", "-l", type=click.UNPROCESSED, help="Log Level", callback=validate_log_level, default=LogMode.STANDARD
+    "--log_level",
+    "-l",
+    type=click.UNPROCESSED,
+    help=f"Log Level {LogMode.print_options()}",
+    callback=validate_log_level,
+    default=LogMode.STANDARD,
 )
-@click.option("--bump_type", "-t", type=click.UNPROCESSED, help="Bump Type", callback=validate_bump_type)
+@click.option(
+    "--bump_type",
+    "-t",
+    type=click.UNPROCESSED,
+    help=f"Bump Type {BumpType.print_options()}",
+    callback=validate_bump_type,
+)
 def cli(bump_type: str, log_level: LogMode, dry_run: bool) -> None:
     """CLI for semvergit."""
     set_logger(log_mode=log_level)

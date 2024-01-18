@@ -15,6 +15,11 @@ class LogMode(str, Enum):
     def __str__(self) -> str:
         return self.value
 
+    @classmethod
+    def print_options(cls) -> str:
+        """Print options."""
+        return f"{[str(log_mode) for log_mode in list(cls)]}"
+
 
 LOGGER_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{message}</level>"
 
