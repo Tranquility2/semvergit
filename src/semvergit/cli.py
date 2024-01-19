@@ -14,7 +14,7 @@ def validate_log_level(
     try:
         return LogMode(value)
     except ValueError as exp:
-        raise click.BadParameter(f"please select from {LogMode.print_options()}") from exp
+        raise click.BadParameter(f"Please select from {LogMode.print_options()}") from exp
 
 
 def validate_bump_type(
@@ -24,7 +24,7 @@ def validate_bump_type(
     try:
         return BumpType(value)
     except ValueError as exp:
-        raise click.BadParameter(f"please select from {BumpType.print_options()}") from exp
+        raise click.BadParameter(f"Please select from {BumpType.print_options()}") from exp
 
 
 @click.group(invoke_without_command=True, no_args_is_help=True)
