@@ -6,15 +6,33 @@ requires = ["setuptools", "versioningit", "wheel", ]
 name = "semvergit"
 description = "Manage your project's version numbers."
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.8"
+keywords = [
+  "packaging",
+  "publishing",
+  "release",
+  "versioning",
+]
 authors = [{ name = "Roy Moore", email = "roy@moore.co.il" }]
-dynamic = ["version"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
 dependencies = [
     "gitpython==3.1.40",
     "semver==3.0.2",
     "loguru==0.7.2",
     "click==8.1.7",
 ]
+dynamic = ["version"]
 
 [project.optional-dependencies]
 dev = [
