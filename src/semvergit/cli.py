@@ -1,5 +1,6 @@
 """CLI for semvergit."""
 import sys
+from typing import Optional
 
 import click
 
@@ -45,10 +46,12 @@ def validate_bump_type(
     help=f"Bump Type {BumpType.print_options()}",
     callback=validate_bump_type,
 )
-def cli(bump_type: str, log_level: LogMode, dry_run: bool) -> None:
+@click.option("message", "--message", "-m", help="Commit message", default=None)
+@click.option("auto_message", "--auto_message", "-a", is_flag=True, help="Auto commit message", default=False)
+def cli(bump_type: str, log_level: LogMode, dry_run: bool, message: Optional[str], auto_message: bool) -> None:
     """CLI for semvergit."""
     set_logger(log_mode=log_level)
     quiet = log_level == LogMode.QUIET
     svg = SemverGit()
-    svg.update(bump_type=bump_type, quiet=quiet, dry_run=dry_run)
+    svg.update(bump_type=bump_type, quiet=quiet, dry_run=dry_run, commit_message=message, auto_message=auto_message)
     sys.exit(0)

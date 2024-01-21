@@ -1,12 +1,20 @@
 """Test git_utils."""
 from __future__ import annotations
 
-from typing import List, Optional, TypeVar
+from typing import List, TypeVar
 
 from git import Repo
 from pytest import MonkeyPatch, mark
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, push_remote, set_tag
+from semvergit.git_utils import (
+    get_active_branch,
+    get_repo,
+    get_tags_with_prefix,
+    new_commit,
+    pull_remote,
+    push_remote,
+    set_tag,
+)
 
 T = TypeVar("T")
 
@@ -98,25 +106,44 @@ def test_get_tags_with_prefix(test_tags: List[str], prefix: str, expected: List[
         assert fetched_tags == expected
 
 
-@mark.parametrize(
-    "test_tag, test_message",
-    [
-        ("testtag", None),
-        ("testtag", "testmessage"),
-    ],
-)
-def test_set_tag(test_tag: str, test_message: Optional[str]) -> None:
+def test_new_commit() -> None:
+    """Test new_commit."""
+
+    class MockCommit:  # pylint: disable=too-few-public-methods
+        """Mock commit."""
+
+        @property
+        def hexsha(self) -> str:
+            """Hexsha."""
+            return "112233"
+
+    class MockIndex:  # pylint: disable=too-few-public-methods
+        """Mock index."""
+
+        @staticmethod
+        def commit(message: str) -> MockCommit:  # pylint: disable=unused-argument
+            """Commit."""
+            return MockCommit()
+
+    test_repo = Repo()
+
+    MonkeyPatch().setattr("semvergit.git_utils.Repo.index", MockIndex)
+    result = new_commit(test_repo, "testmessage")
+    assert result == "112233"
+
+
+def test_set_tag() -> None:
     """Test set_tag."""
 
-    def mock_create_tag(repo: Repo, tag: str, message: Optional[str] = None) -> str:  # pylint: disable=unused-argument
+    def mock_create_tag(repo: Repo, tag: str) -> str:  # pylint: disable=unused-argument
         """Mock create_tag."""
         return tag
 
     test_repo = Repo()
 
     MonkeyPatch().setattr("semvergit.git_utils.Repo.create_tag", mock_create_tag)
-    result = set_tag(test_repo, test_tag, test_message)
-    assert result == test_tag
+    result = set_tag(test_repo, "testtag")
+    assert result == "testtag"
 
 
 def test_push_remote() -> None:

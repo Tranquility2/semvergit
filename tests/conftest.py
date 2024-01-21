@@ -84,3 +84,13 @@ def mock_push_remote(monkeypatch: MonkeyPatch) -> None:
         pass
 
     monkeypatch.setattr("semvergit.app.push_remote", push_remote)
+
+
+@pytest.fixture(autouse=True)
+def mock_new_commit(monkeypatch: MonkeyPatch) -> None:
+    """Mock new_commit."""
+
+    def new_commit(repo: Repo, message: str) -> None:  # pylint: disable=unused-argument
+        pass
+
+    monkeypatch.setattr("semvergit.app.new_commit", new_commit)

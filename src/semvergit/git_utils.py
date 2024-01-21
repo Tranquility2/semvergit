@@ -1,5 +1,5 @@
 """Git utilities."""
-from typing import List, Optional
+from typing import List
 
 from git import Head, Repo
 from loguru import logger
@@ -35,9 +35,17 @@ def get_tags_with_prefix(repo: Repo, prefix: str = "v") -> List[str]:
     return results
 
 
-def set_tag(repo: Repo, tag: str, message: Optional[str] = None) -> VersionInfo:
+def new_commit(repo: Repo, message: str) -> str:
+    """New commit."""
+    new_commit_id = repo.index.commit(message=message)
+    short_commit_id = new_commit_id.hexsha[:7]
+    logger.debug(f"Created commit [{short_commit_id}] {message}")
+    return short_commit_id
+
+
+def set_tag(repo: Repo, tag: str) -> VersionInfo:
     """Set tag."""
-    new_tag = repo.create_tag(tag, message=message)
+    new_tag = repo.create_tag(tag)
     logger.debug(f"Created tag {tag}")
     return new_tag
 

@@ -1,5 +1,7 @@
 """Test app."""
 
+from typing import Optional
+
 from pytest import CaptureFixture, LogCaptureFixture, mark
 from semver import VersionInfo
 
@@ -75,20 +77,34 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
         (str(BumpType.PRERELEASE), VersionInfo(0, 0, 5, "dev.1")),
     ],
 )
+@mark.parametrize(
+    "commit_message, auto_message",
+    [
+        ("testmessage", False),
+        (None, True),
+        (None, False),
+    ],
+)
 def test_app_update(  # pylint: disable=too-many-arguments
     caplog: LogCaptureFixture,
     bump_type: str,
     expected_version: VersionInfo,
     quiet: bool,
     dry_run: bool,
+    commit_message: Optional[str],
+    auto_message: bool,
     capsys: CaptureFixture,
 ) -> None:
     """Test app."""
     svg = SemverGit()
-    new_version = svg.update(bump_type, quiet=quiet, dry_run=dry_run)
+    new_version = svg.update(
+        bump_type, quiet=quiet, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message
+    )
     expected_version_str = f"{svg.version_prefix}{str(expected_version)}"
     if not dry_run:
         expected = f"mock-set-tag-{expected_version_str}"
+        if commit_message or auto_message:
+            assert "Committing..." in caplog.messages
     else:
         expected = expected_version_str
     if quiet:

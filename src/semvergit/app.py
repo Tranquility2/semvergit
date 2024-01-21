@@ -3,12 +3,20 @@
 import sys
 from enum import Enum
 from importlib import metadata
-from typing import List
+from typing import List, Optional
 
 from loguru import logger
 from semver import VersionInfo
 
-from semvergit.git_utils import get_active_branch, get_repo, get_tags_with_prefix, pull_remote, push_remote, set_tag
+from semvergit.git_utils import (
+    get_active_branch,
+    get_repo,
+    get_tags_with_prefix,
+    new_commit,
+    pull_remote,
+    push_remote,
+    set_tag,
+)
 
 
 class BumpType(str, Enum):
@@ -61,19 +69,31 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             return text[len(prefix) :]
         return text
 
-    def update(self, bump_type: str, quiet: bool, dry_run: bool) -> str:
+    def update(  # pylint: disable=too-many-arguments
+        self, bump_type: str, quiet: bool, dry_run: bool, commit_message: Optional[str], auto_message: bool
+    ) -> str:
         """Update."""
         new_version = self.latest_version.next_version(part=bump_type, prerelease_token=self.prerelease_token)
         logger.info(f"Update from {self.latest_version} with {bump_type} to {new_version}")
         new_tag_str = f"{self.version_prefix}{new_version}"
-        if not dry_run:
+        if dry_run:
+            logger.warning("Dry run (no tag set or pushed)")
+        else:
+            if auto_message:
+                commit_message = f"New version: {new_tag_str}"
+                logger.info("Committing...")
+                new_commit(repo=self.current_repo, message=commit_message)
+            elif commit_message:
+                logger.info("Committing...")
+                new_commit(repo=self.current_repo, message=commit_message)
+            else:
+                logger.debug("No commit message")
+
             new_tag = set_tag(repo=self.current_repo, tag=new_tag_str)
-            logger.debug(f"New tag: {new_tag}")
             new_tag_str = str(new_tag)
             logger.info("Pushing...")
             push_remote(repo=self.current_repo, tag_str=new_tag_str)
-        else:
-            logger.warning("Dry run (no tag set or pushed)")
+
         logger.success(f"New version: {new_tag_str}")
         if quiet:
             sys.stdout.write(new_tag_str)
