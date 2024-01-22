@@ -1,9 +1,28 @@
 """Git utilities."""
-from typing import List
+from functools import wraps
+from typing import Any, Callable, List, Optional
 
 from git import Head, Repo
 from loguru import logger
 from semver import VersionInfo
+
+
+def drywrap(func: Callable) -> Callable:
+    """Dry run wrapper."""
+
+    @wraps(func)
+    def dryfunc(*args: Any, **kwargs: Any) -> Optional[Callable]:
+        """Dry run function."""
+        dry_run = kwargs.get("dry_run")
+        if dry_run is not None and dry_run:
+            logger.debug(f"Dry run: {func.__name__}(*{args}, **{kwargs})")
+            return None
+
+        if dry_run is not None:
+            del kwargs["dry_run"]
+        return func(*args, **kwargs)
+
+    return dryfunc
 
 
 def get_repo(search_parent_directories: bool = True) -> Repo:
@@ -35,6 +54,7 @@ def get_tags_with_prefix(repo: Repo, prefix: str = "v") -> List[str]:
     return results
 
 
+@drywrap
 def new_commit(repo: Repo, message: str) -> str:
     """New commit."""
     new_commit_id = repo.index.commit(message=message)
@@ -43,13 +63,15 @@ def new_commit(repo: Repo, message: str) -> str:
     return short_commit_id
 
 
+@drywrap
 def set_tag(repo: Repo, tag: str) -> VersionInfo:
     """Set tag."""
     new_tag = repo.create_tag(tag)
-    logger.debug(f"Created tag {tag}")
+    logger.debug(f"Created {str(new_tag)}")
     return new_tag
 
 
+@drywrap
 def push_remote(repo: Repo, tag_str: str) -> None:
     """Push remote."""
     remote = repo.remotes.origin

@@ -60,12 +60,10 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
 
 
 @mark.parametrize(
-    "quiet, dry_run",
+    "dry_run",
     [
-        (True, True),
-        (True, False),
-        (False, True),
-        (False, False),
+        True,
+        False,
     ],
 )
 @mark.parametrize(
@@ -89,7 +87,6 @@ def test_app_update(  # pylint: disable=too-many-arguments
     caplog: LogCaptureFixture,
     bump_type: str,
     expected_version: VersionInfo,
-    quiet: bool,
     dry_run: bool,
     commit_message: Optional[str],
     auto_message: bool,
@@ -97,18 +94,13 @@ def test_app_update(  # pylint: disable=too-many-arguments
 ) -> None:
     """Test app."""
     svg = SemverGit()
-    new_version = svg.update(
-        bump_type, quiet=quiet, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message
-    )
-    expected_version_str = f"{svg.version_prefix}{str(expected_version)}"
-    if not dry_run:
-        expected = f"mock-set-tag-{expected_version_str}"
-        if commit_message or auto_message:
-            assert "Committing..." in caplog.messages
-    else:
-        expected = expected_version_str
-    if quiet:
-        assert capsys.readouterr().out == expected
+    new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
 
-    assert new_version == expected
+    expected_version_str = f"{svg.version_prefix}{str(expected_version)}"
+    assert f"Created mock-set-tag-{expected_version_str}" in caplog.messages
+    if commit_message or auto_message:
+        assert "Committing..." in caplog.messages
+    assert "Pushing..." in caplog.messages
+    assert capsys.readouterr().out == expected_version_str
+    assert new_version == expected_version_str
     assert f"New version: {new_version}" in caplog.messages

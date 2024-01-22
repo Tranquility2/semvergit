@@ -70,8 +70,10 @@ def mock_pull_remote(monkeypatch: MonkeyPatch) -> None:
 def mock_set_tag(monkeypatch: MonkeyPatch) -> None:
     """Mock set_tag."""
 
-    def set_tag(repo: Repo, tag: str) -> str:  # pylint: disable=unused-argument
-        return f"mock-set-tag-{tag}"
+    def set_tag(repo: Repo, tag: str, dry_run: bool) -> str:  # pylint: disable=unused-argument
+        mock_tag_str = f"mock-set-tag-{tag}"
+        logger.debug(f"Created {mock_tag_str}")
+        return mock_tag_str
 
     monkeypatch.setattr("semvergit.app.set_tag", set_tag)
 
@@ -80,7 +82,7 @@ def mock_set_tag(monkeypatch: MonkeyPatch) -> None:
 def mock_push_remote(monkeypatch: MonkeyPatch) -> None:
     """Mock push_remote."""
 
-    def push_remote(repo: Repo, tag_str: str) -> None:  # pylint: disable=unused-argument
+    def push_remote(repo: Repo, tag_str: str, dry_run: bool) -> None:  # pylint: disable=unused-argument
         pass
 
     monkeypatch.setattr("semvergit.app.push_remote", push_remote)
@@ -90,7 +92,7 @@ def mock_push_remote(monkeypatch: MonkeyPatch) -> None:
 def mock_new_commit(monkeypatch: MonkeyPatch) -> None:
     """Mock new_commit."""
 
-    def new_commit(repo: Repo, message: str) -> None:  # pylint: disable=unused-argument
+    def new_commit(repo: Repo, message: str, dry_run: bool) -> None:  # pylint: disable=unused-argument
         pass
 
     monkeypatch.setattr("semvergit.app.new_commit", new_commit)

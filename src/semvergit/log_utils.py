@@ -5,20 +5,12 @@ from enum import Enum
 from loguru import logger
 
 
-class LogMode(str, Enum):
-    """Log mode."""
+class LogLevel(Enum):
+    """LogLevel."""
 
-    DEBUG = "debug"
-    STANDARD = "standard"
-    QUIET = "quiet"
-
-    def __str__(self) -> str:
-        return self.value
-
-    @classmethod
-    def print_options(cls) -> str:
-        """Print options."""
-        return f"{[str(log_mode) for log_mode in list(cls)]}"
+    ERROR = 0
+    INFO = 1
+    DEBUG = 2
 
 
 LOGGER_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{message}</level>"
@@ -31,13 +23,13 @@ LOGGER_FORMAT_DEBUG = (
 )
 
 
-def set_logger(log_mode: LogMode = LogMode.STANDARD) -> None:
+def set_logger(log_level: LogLevel = LogLevel.INFO) -> None:
     """Set logger."""
-    if log_mode == LogMode.DEBUG:
+    if log_level == LogLevel.DEBUG:
         logger.add(sys.stderr, format=LOGGER_FORMAT_DEBUG, level="DEBUG")
-    elif log_mode == LogMode.STANDARD:
+    elif log_level == LogLevel.INFO:
         logger.add(sys.stderr, format=LOGGER_FORMAT, level="INFO")
-    elif log_mode == LogMode.QUIET:
+    elif log_level == LogLevel.ERROR:
         logger.add(sys.stderr, format=LOGGER_FORMAT, level="ERROR")
     else:
-        raise ValueError(f"Invalid debug mode: {log_mode}")
+        raise ValueError(f"Invalid debug mode: {log_level}")

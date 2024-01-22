@@ -1,12 +1,13 @@
 """Test git_utils."""
 from __future__ import annotations
 
-from typing import List, TypeVar
+from typing import Dict, List, Tuple, TypeVar
 
 from git import Repo
 from pytest import MonkeyPatch, mark
 
 from semvergit.git_utils import (
+    drywrap,
     get_active_branch,
     get_repo,
     get_tags_with_prefix,
@@ -17,6 +18,19 @@ from semvergit.git_utils import (
 )
 
 T = TypeVar("T")
+
+
+def test_drywrap() -> None:
+    """Test drywrap."""
+
+    @drywrap
+    def dry_tester(*args: Tuple, **kwargs: Dict) -> Tuple[Tuple, Dict]:
+        """Dry tester."""
+        return args, kwargs
+
+    assert dry_tester("test", dry_run=True) is None
+    assert dry_tester("test") == (("test",), {})
+    assert dry_tester("test", dry_run=False) == (("test",), {})
 
 
 def test_get_repo() -> None:
