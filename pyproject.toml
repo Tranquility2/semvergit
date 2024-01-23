@@ -45,6 +45,9 @@ dev = [
     "mypy",
 ]
 
+[project.scripts]
+semvergit = "semvergit.cli:cli"
+
 [project.urls]
 homepage = "https://github.com/Tranquility2/semvergit"
 repository = "https://github.com/Tranquility2/semvergit"
