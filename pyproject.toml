@@ -6,7 +6,7 @@ requires = ["setuptools", "versioningit", "wheel", ]
 name = "semvergit"
 description = "Manage your project's version numbers."
 readme = "README.md"
-license = "MIT"
+license = {file = "LICENSE.md"}
 requires-python = ">=3.8"
 keywords = [
   "packaging",
