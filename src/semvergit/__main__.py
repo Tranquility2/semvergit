@@ -2,4 +2,4 @@
 
 from semvergit.cli import cli
 
-cli()
+cli()  # pylint: disable=no-value-for-parameter

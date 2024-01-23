@@ -25,7 +25,7 @@ fix-format:
 	python3 -m isort .
 
 check-lint:
-	python3 -m pylint --reports=True semvergit
+	python3 -m pylint --reports=True --recursive=y .
 
 pytest:
 	python3 -m pytest -v
