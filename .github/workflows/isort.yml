@@ -3,6 +3,7 @@ on: [ pull_request, workflow_dispatch ]
 
 jobs:
   build:
+    name: Isort Validation
     runs-on: ubuntu-latest
     strategy:
       matrix:
