@@ -102,10 +102,9 @@ jobs:
         run: |
           make build
 
-      # - name: Publish To PyPI
-      #   env:
-      #     TWINE_PASSWORD:
-      #     TWINE_USERNAME:
-      #     TWINE_REPOSITORY_URL:
-      #   run: |
-      #     make publish
+      - name: Publish To PyPI
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          TWINE_USERNAME: ${{ secrets.PYPI_API_USER }}
+        run: |
+          make publish
