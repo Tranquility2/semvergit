@@ -1,0 +1,111 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        required: true
+        description: Bump Type
+        type: choice
+        options:
+          - prerelease
+          - patch
+          - minor
+          - major
+        default: patch
+
+      release_notes:
+        required: false
+        description: Release notes
+
+      release_notes_file:
+        required: false
+        type: string
+        description: Path to the release notes file
+
+jobs:
+  publish-package:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Prepare Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup
+        run: |
+          make setup-dev
+
+      - name: Bump Version
+        id: bump_version
+        env:
+          BUMP_TYPE: ${{ github.event.inputs.bump_type }}
+        run: |
+          echo "Bumping type: ${{ env.BUMP_TYPE }}"
+          new_version=$(semvergit -t ${{ env.BUMP_TYPE }} -v)
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Validate Release Notes
+        id: validate_release_notes
+        env:
+          RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
+          RELEASE_NOTES_FILE: ${{ github.event.inputs.release_notes_file }}
+          NEW_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        run: |
+          if [ ! -f ${{ env.RELEASE_NOTES_FILE }} ]; then
+            echo "Release notes file not found: ${{ env.RELEASE_NOTES_FILE }}"
+            exit 1
+          else
+            echo "Release notes file found: ${{ env.RELEASE_NOTES_FILE }}"
+            echo "release_notes_file=${{ env.RELEASE_NOTES_FILE }}" >> $GITHUB_OUTPUT
+          fi
+          if [ -z ${{ env.RELEASE_NOTES }} ]; then
+            TEMPLATE_NOTE="New Release ${{ env.NEW_VERSION }}"
+            echo "Release notes not found: ${{ env.RELEASE_NOTES }}"
+            echo "Setting release notes to: $TEMPLATE_NOTE"
+            echo "release_notes=$TEMPLATE_NOTE" >> $GITHUB_OUTPUT
+          else
+            echo "Release notes found: ${{ env.RELEASE_NOTES }}"
+            echo "release_notes=${{ env.RELEASE_NOTES }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create New GH Release (without notes files)
+        if: ${{ github.event.inputs.release_notes_file == '' }}
+        env:
+          RELEASE_NOTES: ${{ steps.validate_release_notes.outputs.release_notes }}
+          NEW_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release create ${{ env.NEW_VERSION }} --notes "${{ env.RELEASE_NOTES }}"
+
+      - name: Create New GH Release (with notes files)
+        if: ${{ github.event.inputs.release_notes_file != '' }}
+        env:
+          RELEASE_NOTES: ${{ steps.validate_release_notes.outputs.release_notes }}
+          RELEASE_NOTES_FILE: ${{ steps.validate_release_notes.outputs.release_notes_file }}
+          NEW_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release create ${{ env.NEW_VERSION }} --notes "${{ env.RELEASE_NOTES }}" --notes-file "${{ env.RELEASE_NOTES_FILE }}"
+
+      - name: Build Package
+        run: |
+          make build
+
+      # - name: Publish To PyPI
+      #   env:
+      #     TWINE_PASSWORD:
+      #     TWINE_USERNAME:
+      #     TWINE_REPOSITORY_URL:
+      #   run: |
+      #     make publish
