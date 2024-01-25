@@ -96,11 +96,11 @@ def test_app_update(  # pylint: disable=too-many-arguments
     svg = SemverGit()
     new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
 
-    expected_version_str = f"{svg.version_prefix}{str(expected_version)}"
-    assert f"Created mock-set-tag-{expected_version_str}" in caplog.messages
+    expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
+    assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
     if commit_message or auto_message:
         assert "Committing..." in caplog.messages
     assert "Pushing..." in caplog.messages
-    assert capsys.readouterr().out == expected_version_str
-    assert new_version == expected_version_str
-    assert f"New version: {new_version}" in caplog.messages
+    assert capsys.readouterr().out == str(expected_version)
+    assert new_version == str(expected_version)
+    assert f"New version tag: {expected_tag_str}" in caplog.messages
