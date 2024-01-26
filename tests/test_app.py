@@ -101,6 +101,6 @@ def test_app_update(  # pylint: disable=too-many-arguments
     if commit_message or auto_message:
         assert "Committing..." in caplog.messages
     assert "Pushing..." in caplog.messages
-    assert capsys.readouterr().out == str(expected_version)
-    assert new_version == str(expected_version)
+    assert capsys.readouterr().out == expected_tag_str
+    assert new_version == expected_tag_str
     assert f"New version tag: {expected_tag_str}" in caplog.messages
