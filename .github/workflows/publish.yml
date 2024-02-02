@@ -13,6 +13,16 @@ on:
           - minor
           - major
         default: patch
+      release:
+        required: true
+        description: Release
+        type: boolean
+        default: true
+      publish:
+        required: true
+        description: Publish
+        type: boolean
+        default: true
 
 jobs:
   publish-package:
@@ -47,8 +57,9 @@ jobs:
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       - name: Create Github Release
+        if: ${{ github.event.inputs.release == true }}
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -57,10 +68,12 @@ jobs:
           body: New Release ${{ steps.bump_version.outputs.new_version }}
 
       - name: Build Package
+        if: ${{ github.event.inputs.publish == true }}
         run: |
           make build
 
       - name: Publish To PyPI
+        if: ${{ github.event.inputs.publish == true }}
         env:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
           TWINE_USERNAME: ${{ secrets.PYPI_API_USER }}
