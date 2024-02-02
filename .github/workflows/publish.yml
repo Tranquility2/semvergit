@@ -14,15 +14,6 @@ on:
           - major
         default: patch
 
-      release_notes:
-        required: false
-        description: Release notes
-
-      release_notes_file:
-        required: false
-        type: string
-        description: Path to the release notes file
-
 jobs:
   publish-package:
     name: Publish Package
@@ -54,6 +45,16 @@ jobs:
           echo "Bumping type: ${{ env.BUMP_TYPE }}"
           new_version=$(semvergit -t ${{ env.BUMP_TYPE }} -v)
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Create Github Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
+          release_name: ${{ steps.bump_version.outputs.new_version }}
+          body: New Release ${{ steps.bump_version.outputs.new_version }}
 
       - name: Build Package
         run: |
