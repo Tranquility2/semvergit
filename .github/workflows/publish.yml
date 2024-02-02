@@ -57,7 +57,7 @@ jobs:
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       - name: Create Github Release
-        if: ${{ github.event.inputs.release == true }}
+        if: ${{ github.event.inputs.release == 'true' }}
         id: create_release
         uses: softprops/action-gh-release@v1
         env:
@@ -68,12 +68,12 @@ jobs:
           body: New Release ${{ steps.bump_version.outputs.new_version }}
 
       - name: Build Package
-        if: ${{ github.event.inputs.publish == true }}
+        if: ${{ github.event.inputs.publish == 'true' }}
         run: |
           make build
 
       - name: Publish To PyPI
-        if: ${{ github.event.inputs.publish == true }}
+        if: ${{ github.event.inputs.publish == 'true' }}
         env:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
           TWINE_USERNAME: ${{ secrets.PYPI_API_USER }}
