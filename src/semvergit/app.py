@@ -72,24 +72,24 @@ class SemverGit:  # pylint: disable=too-few-public-methods
     def update(self, bump_type: str, dry_run: bool, commit_message: Optional[str], auto_message: bool) -> str:
         """Update."""
         new_version = self.latest_version.next_version(part=bump_type, prerelease_token=self.prerelease_token)
-        logger.info(f"Update from {self.latest_version} with {bump_type} to {new_version}")
+        logger.info(f"💡 Update from {self.latest_version} with {bump_type} to {new_version}")
         new_tag_str = f"{self.version_prefix}{new_version}"
 
         if dry_run:
-            logger.warning("Dry run (no tag set or pushed)")
+            logger.warning("⚠️ Dry run (no tag set or pushed)")
 
         if auto_message:
             commit_message = f"New version: {str(new_version)}"
         if auto_message or commit_message:
-            logger.info("Committing...")
+            logger.info("✍️ Committing...")
             new_commit(repo=self.current_repo, message=commit_message, dry_run=dry_run)
         else:
             logger.debug("No commit message")
 
         set_tag(repo=self.current_repo, tag=new_tag_str, dry_run=dry_run)
-        logger.info("Pushing...")
+        logger.info("📤 Pushing...")
         push_remote(repo=self.current_repo, tag_str=new_tag_str, dry_run=dry_run)
 
-        logger.success(f"New version tag: {new_tag_str}")
+        logger.success(f"⭐ New version tag: {new_tag_str}")
         sys.stdout.write(new_tag_str)
         return str(new_tag_str)
