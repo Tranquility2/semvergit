@@ -21,7 +21,7 @@ def validate_bump_type(
 @click.group(invoke_without_command=True, no_args_is_help=True)
 @click.version_option()
 @click.option("--dry_run", "-d", is_flag=True, help="Dry run", default=False)
-@click.option("--verbose", "-v", count=True, help="Verbose", default=0, type=click.IntRange(0, 2))
+@click.option("--verbose", "-v", count=True, help="Verbose level", default=0, type=click.IntRange(0, 2))
 @click.option(
     "--bump_type",
     "-t",
