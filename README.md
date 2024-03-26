@@ -35,7 +35,7 @@ Simple install using
 ``pip install semvergit``
 
 Then you can use it in your project like this:
-``semvergit -t patch -d -v -am``
+``semvergit -t patch -v -am``
 (to bump the patch version)
 This will:
 
