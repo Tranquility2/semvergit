@@ -1,4 +1,5 @@
 """Git utilities."""
+
 from functools import wraps
 from typing import Any, Callable, List, Optional
 

@@ -1,11 +1,12 @@
 """Test log_utils module."""
+
 from semvergit.log_utils import set_logger
 
 
 def test_set_logger_invalid() -> None:
     """Test set_logger with invalid mode."""
     try:
-        set_logger("invalid")  # type: ignore
+        set_logger("invalid")
     except ValueError:
         pass
     else:
