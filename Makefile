@@ -1,4 +1,4 @@
-.PHONY: run clean
+.PHONY: run clean build
 
 SHELL=/bin/bash
 
