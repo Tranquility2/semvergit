@@ -1,0 +1,8 @@
+--constraint requirements.txt
+
+black
+isort
+pylint
+pre-commit
+mypy
+bandit[toml]

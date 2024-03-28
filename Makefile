@@ -2,8 +2,14 @@
 
 SHELL=/bin/bash
 
+setup:
+	python3 -m pip install --editable '.[dev,test]'
+
 setup-dev:
-	python3 -m pip install --editable '.[dev]'
+	python3 -m pip install '.[dev]'
+
+setup-test:
+	python3 -m pip install '.[test]'
 
 pip-clean:
 	python3 -m pip uninstall -y -r <(pip freeze)
@@ -41,6 +47,18 @@ check-mypy:
 
 check-bandit:
 	python3 -m bandit -c pyproject.toml -r .
+
+compile:
+	python3 -m pip install --upgrade pip-tools
+	python3 -m piptools compile -o requirements.txt requirements.in
+	python3 -m piptools compile -o requirements-test.txt requirements-test.in
+	python3 -m piptools compile -o requirements-dev.txt requirements-dev.in
+
+update:
+	python3 -m pip install --upgrade pip-tools
+	python3 -m piptools compile --upgrade --output-file requirements.txt requirements.in
+	python3 -m piptools compile --upgrade --output-file requirements-test.txt requirements-test.in
+	python3 -m piptools compile --upgrade --output-file requirements-dev.txt requirements-dev.in
 
 build:
 	python3 -m pip install --upgrade build
