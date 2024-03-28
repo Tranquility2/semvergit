@@ -1,19 +1,14 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "versioningit", "wheel", ]
+requires = ["setuptools", "versioningit", "wheel"]
 
 [project]
 name = "semvergit"
 description = "Manage your project's version numbers."
 readme = "README.md"
-license = {file = "LICENSE.md"}
+license = { file = "LICENSE.md" }
 requires-python = ">=3.8"
-keywords = [
-  "packaging",
-  "publishing",
-  "release",
-  "versioning",
-]
+keywords = ["packaging", "publishing", "release", "versioning"]
 authors = [{ name = "Roy Moore", email = "roy@moore.co.il" }]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -26,25 +21,15 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
-dependencies = [
-    "gitpython==3.1.40",
-    "semver==3.0.2",
-    "loguru==0.7.2",
-    "click==8.1.7",
-]
-dynamic = ["version"]
 
-[project.optional-dependencies]
-dev = [
-    "black",
-    "isort",
-    "pylint",
-    "pre-commit",
-    "pytest",
-    "pytest-cov",
-    "mypy",
-    "bandit[toml]",
-]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic.dependencies]
+file = ["requirements.txt"]
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements-dev.txt"] }
+test = { file = ["requirements-test.txt"] }
 
 [project.scripts]
 semvergit = "semvergit.cli:cli"
@@ -60,6 +45,13 @@ method = "git"
 
 [tool.versioningit.tag2version]
 rmprefix = "v"
+
+[tool.pip-tools]
+quiet = true
+rebuild = true
+strip-extras = true
+no-header = true
+annotation-style = "line"
 
 [tool.black]
 line-length = 120

@@ -1,0 +1,33 @@
+astroid==3.1.0            # via pylint
+bandit==1.7.8             # via -r requirements-dev.in
+black==24.3.0             # via -r requirements-dev.in
+cfgv==3.4.0               # via pre-commit
+click==8.1.7              # via -c requirements.txt, black
+dill==0.3.8               # via pylint
+distlib==0.3.8            # via virtualenv
+filelock==3.13.3          # via virtualenv
+identify==2.5.35          # via pre-commit
+isort==5.13.2             # via -r requirements-dev.in, pylint
+markdown-it-py==3.0.0     # via rich
+mccabe==0.7.0             # via pylint
+mdurl==0.1.2              # via markdown-it-py
+mypy==1.9.0               # via -r requirements-dev.in
+mypy-extensions==1.0.0    # via black, mypy
+nodeenv==1.8.0            # via pre-commit
+packaging==24.0           # via black
+pathspec==0.12.1          # via black
+pbr==6.0.0                # via stevedore
+platformdirs==4.2.0       # via black, pylint, virtualenv
+pre-commit==3.5.0         # via -r requirements-dev.in
+pygments==2.17.2          # via rich
+pylint==3.1.0             # via -r requirements-dev.in
+pyyaml==6.0.1             # via bandit, pre-commit
+rich==13.7.1              # via bandit
+stevedore==5.2.0          # via bandit
+tomli==2.0.1              # via bandit, black, mypy, pylint
+tomlkit==0.12.4           # via pylint
+typing-extensions==4.10.0  # via astroid, black, mypy, pylint, rich
+virtualenv==20.25.1       # via pre-commit
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
