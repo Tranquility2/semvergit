@@ -99,8 +99,9 @@ def test_app_update(  # pylint: disable=too-many-arguments
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
     if commit_message or auto_message:
-        assert "Committing..." in caplog.messages
-    assert "Pushing..." in caplog.messages
+        assert "✍️ Committing..." in caplog.messages
+    assert "📤 Pushing..." in caplog.messages
     assert capsys.readouterr().out == expected_tag_str
     assert new_version == expected_tag_str
-    assert f"New version tag: {expected_tag_str}" in caplog.messages
+    print(f"{caplog.messages=}")
+    assert f"⭐ New version tag: {expected_tag_str}" in caplog.messages
