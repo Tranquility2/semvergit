@@ -39,7 +39,7 @@ tests: | pytest coverage
 check-mypy:
 	python3 -m mypy	.
 
-bandit:
+check-bandit:
 	python3 -m bandit -c pyproject.toml -r .
 
 build:

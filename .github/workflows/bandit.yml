@@ -1,0 +1,21 @@
+name: Bandit
+on: [ pull_request, workflow_dispatch ]
+
+jobs:
+  build:
+    name: Bandit Validation
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        make setup-dev
+    - name: Analysing the code with Bandit
+      run: |
+        make check-bandit
