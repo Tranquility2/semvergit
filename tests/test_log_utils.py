@@ -1,4 +1,5 @@
 """Test log_utils module."""
+
 from semvergit.log_utils import set_logger
 
 

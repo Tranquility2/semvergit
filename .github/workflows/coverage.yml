@@ -16,7 +16,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         make setup-dev
-    - name: Analysing the code with pylint
+    - name: Coverage Report
       run: |
         make coverage
     - name: Report Coveralls

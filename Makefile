@@ -39,6 +39,9 @@ tests: | pytest coverage
 check-mypy:
 	python3 -m mypy	.
 
+check-bandit:
+	python3 -m bandit -c pyproject.toml -r .
+
 build:
 	python3 -m pip install --upgrade build
 	python3 -m build
