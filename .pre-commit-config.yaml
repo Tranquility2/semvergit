@@ -9,19 +9,19 @@ repos:
   - repo: local
     hooks:
     - id: black
-      name: black
+      name: Run Black
       description: "Black: The uncompromising Python code formatter"
       entry: black
       language: python
       types: [python]
     - id: isort
-      name: isort
+      name: Run Isort
       description: "isort your imports, so you don't have to"
       entry: isort
       language: python
       types: [python]
     - id: pylint
-      name: pylint
+      name: Run Pylint
       description: "Pylint: Python code static checker"
       entry: pylint
       language: system
@@ -37,6 +37,7 @@ repos:
       entry: mypy
       language: system
       types: [python]
+      args: ["-v"]
     - id: bandit
       name: Run bandit
       description: "Bandit: find common security issues in Python code"
