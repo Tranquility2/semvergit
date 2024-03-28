@@ -40,7 +40,7 @@ check-mypy:
 	python3 -m mypy	.
 
 bandit:
-	python3 -m bandit -r .
+	python3 -m bandit -c pyproject.toml -r .
 
 build:
 	python3 -m pip install --upgrade build

@@ -43,4 +43,4 @@ repos:
       entry: bandit
       language: system
       types: [python]
-      args: ["-r", "."]
+      args: ["-c", "pyproject.toml", "-r", "."]
