@@ -15,7 +15,7 @@ def validate_bump_type(
     try:
         return BumpType(value)
     except ValueError as exp:
-        raise click.BadParameter(f"Please select from {BumpType.print_options()}") from exp
+        raise click.BadParameter(f"Please use {BumpType.print_options()}") from exp
 
 
 @click.group(invoke_without_command=True, no_args_is_help=True)
