@@ -1,4 +1,5 @@
 """Test CLI."""
+
 from unittest.mock import patch
 
 from click.testing import CliRunner

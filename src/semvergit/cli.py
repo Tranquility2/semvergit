@@ -1,4 +1,5 @@
 """CLI for semvergit."""
+
 import sys
 from typing import Optional
 
