@@ -100,6 +100,8 @@ def test_app_update(  # pylint: disable=too-many-arguments
     assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
     if commit_message or auto_message:
         assert "✍️ Committing..." in caplog.messages
+    if dry_run:
+        assert "⚠️ Dry run (no tag set or pushed)" in caplog.messages
     assert "📤 Pushing..." in caplog.messages
     assert capsys.readouterr().out == expected_tag_str
     assert new_version == expected_tag_str
