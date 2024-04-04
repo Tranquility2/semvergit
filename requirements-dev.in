@@ -3,6 +3,6 @@
 black
 isort
 pylint
-pre-commit
+pre-commit==3.5.0 # 3.6+ Droped support for python<3.9
 mypy
 bandit[toml]
