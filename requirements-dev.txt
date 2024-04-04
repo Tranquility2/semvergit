@@ -18,15 +18,14 @@ packaging==24.0           # via black
 pathspec==0.12.1          # via black
 pbr==6.0.0                # via stevedore
 platformdirs==4.2.0       # via black, pylint, virtualenv
-pre-commit==3.5.0         # via -r requirements-dev.in
+pre-commit==3.7.0         # via -r requirements-dev.in
 pygments==2.17.2          # via rich
 pylint==3.1.0             # via -r requirements-dev.in
 pyyaml==6.0.1             # via bandit, pre-commit
 rich==13.7.1              # via bandit
 stevedore==5.2.0          # via bandit
-tomli==2.0.1              # via bandit, black, mypy, pylint
 tomlkit==0.12.4           # via pylint
-typing-extensions==4.10.0  # via astroid, black, mypy, pylint, rich
+typing-extensions==4.10.0  # via mypy
 virtualenv==20.25.1       # via pre-commit
 
 # The following packages are considered to be unsafe in a requirements file:
