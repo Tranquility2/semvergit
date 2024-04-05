@@ -15,8 +15,9 @@ def caplog(caplog: LogCaptureFixture) -> Generator:  # pylint: disable=redefined
     https://loguru.readthedocs.io/en/stable/resources/migration.html#making-things-work-with-pytest-and-caplog
     """
     handler_id = logger.add(caplog.handler, format="{message}")
+    print(f"logger handler_id: {handler_id}")
     yield caplog
-    logger.remove(handler_id)
+    logger.remove()
 
 
 @pytest.fixture(autouse=True)
