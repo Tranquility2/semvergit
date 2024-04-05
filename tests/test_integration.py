@@ -33,9 +33,7 @@ def add_file_to_repo(filename: str, repodirname: str, content: str) -> None:
 
 def check_git_log(repodirname: str, expected: str) -> None:
     """Check the git log for the last commit."""
-    result, _ = run_command(
-        'git --no-pager log --pretty=format:"%h%d %s (%cr)" -5', repodirname, "Checked the commit log"
-    )
+    result, _ = run_command('git --no-pager log --pretty=format:"%h%d %s [%an]"', repodirname, "Checked the commit log")
     print(f"Git Log:\n{result}")
     assert expected in result
 
@@ -45,6 +43,12 @@ def update_version(repodirname: str, version_type: str, target_version: str) -> 
     result, logs = run_command(f"semvergit -v -t {version_type}", repodirname, "Created a new version")
     print(logs, end="")
     assert result == target_version
+
+
+def set_credentials(repodirname: str) -> None:
+    """Set the git credentials for the repository."""
+    run_command("git config user.email 'test@test'", repodirname, "Set user email")
+    run_command("git config user.name 'Test User'", repodirname, "Set user name")
 
 
 class TestIntegration:
@@ -57,6 +61,7 @@ class TestIntegration:
         self.repodirname = self.tmpdirname + "/repo"
         run_command(f"mkdir {self.repodirname}", self.tmpdirname, f"Created repo directory: {self.repodirname}")
         run_command("git -c init.defaultBranch=master init", self.repodirname, "Initialized git repository")
+        set_credentials(self.repodirname)
         run_command("touch initial.txt", self.repodirname, "Created initial.txt")
         run_command("git add .", self.repodirname, "Added initial.txt to the index")
         run_command('git commit -m "Initial commit"', self.repodirname, "Committed initial.txt")
@@ -65,6 +70,7 @@ class TestIntegration:
         run_command(
             f"git clone {self.repodirname} {self.clonedirname}", self.repodirname, f"Cloned to {self.clonedirname}"
         )
+        set_credentials(self.clonedirname)
 
     def teardown_method(self) -> None:
         """Remove the temporary directory."""
