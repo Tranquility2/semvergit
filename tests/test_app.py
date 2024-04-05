@@ -1,6 +1,6 @@
 """Test app."""
 
-from typing import Optional
+from typing import List, Optional
 
 from pytest import CaptureFixture, LogCaptureFixture, mark
 from semver import VersionInfo
@@ -59,6 +59,14 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
     assert svg.latest_version == VersionInfo(0, 0, 4)
 
 
+def check_substring(substring_match: str, strings_list: List[str]) -> bool:
+    """Check if list contains substring."""
+    for item in strings_list:
+        if substring_match in item:
+            return True
+    return False
+
+
 @mark.parametrize(
     "dry_run",
     [
@@ -99,9 +107,11 @@ def test_app_update(  # pylint: disable=too-many-arguments
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
     if commit_message or auto_message:
-        assert "✍️ Committing..." in caplog.messages
-    assert "📤 Pushing..." in caplog.messages
+        assert check_substring("Committing...", caplog.messages)
+    if dry_run:
+        assert check_substring("Dry run (no tag set or pushed)", caplog.messages)
+    assert check_substring("Pushing...", caplog.messages)
     assert capsys.readouterr().out == expected_tag_str
     assert new_version == expected_tag_str
     print(f"{caplog.messages=}")
-    assert f"⭐ New version tag: {expected_tag_str}" in caplog.messages
+    assert check_substring(f"New version tag: {expected_tag_str}", caplog.messages)

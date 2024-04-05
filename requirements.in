@@ -1,4 +1,0 @@
-gitpython==3.*
-semver==3.*
-loguru==0.*
-click==8.*
