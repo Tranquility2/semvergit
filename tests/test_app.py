@@ -59,6 +59,50 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
     assert svg.latest_version == VersionInfo(0, 0, 4)
 
 
+@mark.parametrize(
+    "dry_run",
+    [
+        True,
+        False,
+    ],
+)
+@mark.parametrize(
+    "bump_type, expected_version",
+    [
+        (str(BumpType.MAJOR), VersionInfo(1, 0, 0)),
+        (str(BumpType.MINOR), VersionInfo(0, 1, 0)),
+        (str(BumpType.PATCH), VersionInfo(0, 0, 1)),
+        (str(BumpType.PRERELEASE), VersionInfo(0, 0, 1, "dev.1")),
+    ],
+)
+@mark.parametrize(
+    "commit_message, auto_message",
+    [
+        ("testmessage", False),
+        (None, True),
+        (None, False),
+    ],
+)
+# type: ignore[no-untyped-def]
+def test_app_no_versions_update(  # pylint: disable=too-many-arguments
+    bump_type: str,
+    expected_version: VersionInfo,
+    dry_run: bool,
+    commit_message: Optional[str],
+    auto_message: bool,
+    mock_get_tags_empty,  # pylint: disable=unused-argument
+) -> None:
+    """Test app with no versions."""
+    svg = SemverGit()
+    assert svg is not None
+    assert svg.branch.name == "test_branch"
+    assert svg.versions == []
+    assert svg.latest_version == VersionInfo(0, 0, 0)
+    new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
+    expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
+    assert new_version == expected_tag_str
+
+
 def check_substring(substring_match: str, strings_list: List[str]) -> bool:
     """Check if list contains substring."""
     for item in strings_list:

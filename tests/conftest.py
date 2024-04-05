@@ -58,6 +58,16 @@ def mock_get_tags_with_prefix(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("semvergit.app.get_tags_with_prefix", get_tags_with_prefix)
 
 
+@pytest.fixture()
+def mock_get_tags_empty(monkeypatch: MonkeyPatch) -> None:
+    """Mock get_tags_with_prefix with empty list."""
+
+    def get_tags_with_prefix(repo: Repo, prefix: str) -> List[str]:  # pylint: disable=unused-argument
+        return []
+
+    monkeypatch.setattr("semvergit.app.get_tags_with_prefix", get_tags_with_prefix)
+
+
 @pytest.fixture(autouse=True)
 def mock_pull_remote(monkeypatch: MonkeyPatch) -> None:
     """Mock pull_remote."""
