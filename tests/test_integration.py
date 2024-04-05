@@ -78,6 +78,7 @@ class TestIntegration:
         add_file_to_repo("test2.txt", self.clonedirname, "New content")
         check_git_log(self.clonedirname, "Added test2.txt")
         update_version(self.clonedirname, "patch", "v0.0.2")
+        check_git_log(self.clonedirname, "v0.0.2")
 
     def test_integration_minor(self) -> None:
         """Test the integration of the semvergit package with a minor version update."""
@@ -87,6 +88,7 @@ class TestIntegration:
         add_file_to_repo("test2.txt", self.clonedirname, "New content")
         check_git_log(self.clonedirname, "Added test2.txt")
         update_version(self.clonedirname, "minor", "v0.2.0")
+        check_git_log(self.clonedirname, "v0.2.0")
 
     def test_integration_major(self) -> None:
         """Test the integration of the semvergit package with a major version update."""
@@ -96,6 +98,7 @@ class TestIntegration:
         add_file_to_repo("test2.txt", self.clonedirname, "New content")
         check_git_log(self.clonedirname, "Added test2.txt")
         update_version(self.clonedirname, "major", "v2.0.0")
+        check_git_log(self.clonedirname, "v2.0.0")
 
     def test_integration_prerelease(self) -> None:
         """Test the integration of the semvergit package with a prerelease version update."""
@@ -105,6 +108,7 @@ class TestIntegration:
         add_file_to_repo("test2.txt", self.clonedirname, "New content")
         check_git_log(self.clonedirname, "Added test2.txt")
         update_version(self.clonedirname, "prerelease", "v0.0.1-dev.2")
+        check_git_log(self.clonedirname, "v0.0.1-dev.2")
 
     def test_integration_stack(self) -> None:
         """Test the integration of the semvergit package with multiple version updates."""
