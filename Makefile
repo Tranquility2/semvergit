@@ -50,15 +50,9 @@ check-bandit:
 
 compile:
 	python3 -m pip install --upgrade pip-tools
-	python3 -m piptools compile -o requirements.txt requirements.in
-	python3 -m piptools compile -o requirements-test.txt requirements-test.in
-	python3 -m piptools compile -o requirements-dev.txt requirements-dev.in
-
-update:
-	python3 -m pip install --upgrade pip-tools
-	python3 -m piptools compile --upgrade --output-file requirements.txt requirements.in
-	python3 -m piptools compile --upgrade --output-file requirements-test.txt requirements-test.in
-	python3 -m piptools compile --upgrade --output-file requirements-dev.txt requirements-dev.in
+	python3 -m piptools compile -o requirements/requirements.txt pyproject.toml
+	python3 -m piptools compile -o requirements/requirements-test.txt requirements/requirements-test.in
+	python3 -m piptools compile -o requirements/requirements-dev.txt requirements/requirements-dev.in
 
 build:
 	python3 -m pip install --upgrade build
