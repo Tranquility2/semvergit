@@ -7,7 +7,6 @@ name = "semvergit"
 description = "Manage your project's version numbers."
 readme = "README.md"
 license = { file = "LICENSE.md" }
-requires-python = ">=3.8"
 keywords = ["packaging", "publishing", "release", "versioning"]
 authors = [{ name = "Roy Moore", email = "roy@moore.co.il" }]
 classifiers = [
@@ -21,15 +20,19 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
+requires-python = ">=3.8"
+dependencies = [
+  "gitpython>=3.0.0",
+  "semver>=3.0.0",
+  "loguru>=0.7.0",
+  "click>=8.0.0",
+]
 
-dynamic = ["version", "dependencies", "optional-dependencies"]
-
-[tool.setuptools.dynamic.dependencies]
-file = ["requirements.txt"]
+dynamic = ["version", "optional-dependencies"]
 
 [tool.setuptools.dynamic.optional-dependencies]
-dev = { file = ["requirements-dev.txt"] }
-test = { file = ["requirements-test.txt"] }
+dev = { file = ["requirements/requirements-dev.txt"] }
+test = { file = ["requirements/requirements-test.txt"] }
 
 [project.scripts]
 semvergit = "semvergit.cli:cli"
@@ -50,7 +53,6 @@ rmprefix = "v"
 quiet = true
 rebuild = true
 strip-extras = true
-no-header = true
 annotation-style = "line"
 
 [tool.black]

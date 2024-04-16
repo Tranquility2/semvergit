@@ -15,8 +15,9 @@ def caplog(caplog: LogCaptureFixture) -> Generator:  # pylint: disable=redefined
     https://loguru.readthedocs.io/en/stable/resources/migration.html#making-things-work-with-pytest-and-caplog
     """
     handler_id = logger.add(caplog.handler, format="{message}")
+    print(f"logger handler_id: {handler_id}")
     yield caplog
-    logger.remove(handler_id)
+    logger.remove()
 
 
 @pytest.fixture(autouse=True)
@@ -53,6 +54,16 @@ def mock_get_tags_with_prefix(monkeypatch: MonkeyPatch) -> None:
 
     def get_tags_with_prefix(repo: Repo, prefix: str) -> List[str]:  # pylint: disable=unused-argument
         return ["v0.0.1", "v0.0.2", "v0.0.3", "0.0.4"]
+
+    monkeypatch.setattr("semvergit.app.get_tags_with_prefix", get_tags_with_prefix)
+
+
+@pytest.fixture()
+def mock_get_tags_empty(monkeypatch: MonkeyPatch) -> None:
+    """Mock get_tags_with_prefix with empty list."""
+
+    def get_tags_with_prefix(repo: Repo, prefix: str) -> List[str]:  # pylint: disable=unused-argument
+        return []
 
     monkeypatch.setattr("semvergit.app.get_tags_with_prefix", get_tags_with_prefix)
 

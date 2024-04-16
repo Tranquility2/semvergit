@@ -6,10 +6,7 @@
 |||
 
 # semvergit
-
-Manage your project's version numbers.
-
-## Semantic Versioning
+![semvergit](assets/semvergit-255.png)
 
 semvergit is a CLI tool to manage your project's version numbers.
 It uses [Semantic Versioning](https://semver.org/) to bump the version number.
@@ -20,12 +17,12 @@ The supported bump types are:
 - `patch`
 - `prerelease`
 
-## Workflow
-
-- Use the latest git tag to determine the current version number.
-- Bump the version number
-- Create a new git tag
-- Push the tag to the remote
+## Internal Workflow
+___What's actully happening when you run this tool___
+1. Use the latest git tag to determine the current version number.
+2. Bump the version number
+3. Create a new git tag
+4. Push the tag to the remote
 
 Please keep in mind it is designed to be used in a CI/CD pipeline (but not limited to...)
 

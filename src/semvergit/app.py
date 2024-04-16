@@ -53,7 +53,10 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             logger.info("Pulling...")
             pull_remote(self.current_repo)
         self.versions = self.get_versions()
-        self.latest_version = max(self.versions)
+        if self.versions:
+            self.latest_version = max(self.versions)
+        else:
+            self.latest_version = VersionInfo.parse("0.0.0")
 
     def get_versions(self) -> List[VersionInfo]:
         """Get versions."""
