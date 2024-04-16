@@ -83,14 +83,22 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
         (None, False),
     ],
 )
-# type: ignore[no-untyped-def]
+@mark.parametrize(
+    "version_file",
+    [
+        "test_version_file",
+        None,
+    ],
+)
 def test_app_no_versions_update(  # pylint: disable=too-many-arguments
     bump_type: str,
     expected_version: VersionInfo,
     dry_run: bool,
     commit_message: Optional[str],
     auto_message: bool,
-    mock_get_tags_empty,  # pylint: disable=unused-argument
+    version_file: str,
+    mock_get_tags_empty: Callable,  # pylint: disable=unused-argument
+    mock_update_verion_file: Callable,  # pylint: disable=unused-argument
 ) -> None:
     """Test app with no versions."""
     svg = SemverGit()
@@ -99,7 +107,7 @@ def test_app_no_versions_update(  # pylint: disable=too-many-arguments
     assert svg.versions == []
     assert svg.latest_version == VersionInfo(0, 0, 0)
     new_version = svg.update(
-        bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message, version_file=""
+        bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message, version_file=version_file
     )
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert new_version == expected_tag_str
