@@ -46,9 +46,22 @@ def update_version(repodirname: str, version_type: str, target_version: str) -> 
 
 
 def update_version_file(repodirname: str, version_type: str, target_version: str, version_file: str) -> None:
-    """Run the semvergit command to update the version."""
+    """Run the semvergit command to update the version on file."""
     result, logs = run_command(
         f"semvergit -v -t {version_type} -f {version_file}", repodirname, "Created a new version (in file)"
+    )
+    print(logs, end="")
+    assert result == target_version
+
+
+def update_version_file_custom(
+    repodirname: str, version_type: str, target_version: str, version_file: str, custom_message: str
+) -> None:
+    """Run the semvergit command to update the version on file with custom message."""
+    result, logs = run_command(
+        f'semvergit -v -t {version_type} -f {version_file} -m "{custom_message}"',
+        repodirname,
+        "Created a new version (in file)",
     )
     print(logs, end="")
     assert result == target_version
@@ -163,6 +176,6 @@ class TestIntegration:
         check_file_content("version.txt", self.clonedirname, "0.0.1")
         add_file_to_repo("test2.txt", self.clonedirname, "New content")
         check_git_log(self.clonedirname, "Added test2.txt")
-        update_version_file(self.clonedirname, "minor", "v0.1.0", "version.txt")
+        update_version_file_custom(self.clonedirname, "minor", "v0.1.0", "version.txt", "Updated version to 0.1.0")
         check_file_content("version.txt", self.clonedirname, "0.1.0")
         check_git_log(self.clonedirname, "0.1.0")
