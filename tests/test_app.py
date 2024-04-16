@@ -1,6 +1,6 @@
 """Test app."""
 
-from typing import Optional
+from typing import Callable, Optional
 
 from pytest import CaptureFixture, LogCaptureFixture, mark
 from semver import VersionInfo
@@ -83,23 +83,38 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
         (None, False),
     ],
 )
+@mark.parametrize(
+    "version_file",
+    [
+        "test_version_file",
+        None,
+    ],
+)
 def test_app_update(  # pylint: disable=too-many-arguments
     caplog: LogCaptureFixture,
+    mock_update_verion_file: Callable,  # pylint: disable=unused-argument
     bump_type: str,
     expected_version: VersionInfo,
     dry_run: bool,
     commit_message: Optional[str],
     auto_message: bool,
+    version_file: str,
     capsys: CaptureFixture,
 ) -> None:
     """Test app."""
     svg = SemverGit()
-    new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
+    new_version = svg.update(
+        bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message, version_file=version_file
+    )
 
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
     if commit_message or auto_message:
         assert "✍️ Committing..." in caplog.messages
+    if version_file:
+        assert f"📝 Writing version to {version_file}..." in caplog.messages
+        if not commit_message:
+            assert "✍️ Committing..." in caplog.messages
     assert "📤 Pushing..." in caplog.messages
     assert capsys.readouterr().out == expected_tag_str
     assert new_version == expected_tag_str
