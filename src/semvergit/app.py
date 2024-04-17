@@ -8,6 +8,7 @@ from typing import List, Optional
 from loguru import logger
 from semver import VersionInfo
 
+from semvergit.file_utils import update_verion_file
 from semvergit.git_utils import (
     get_active_branch,
     get_repo,
@@ -72,7 +73,10 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             return text[len(prefix) :]
         return text
 
-    def update(self, bump_type: str, dry_run: bool, commit_message: Optional[str], auto_message: bool) -> str:
+    # pylint: disable=too-many-arguments
+    def update(
+        self, bump_type: str, dry_run: bool, commit_message: Optional[str], auto_message: bool, version_file: str
+    ) -> str:
         """Update."""
         new_version = self.latest_version.next_version(part=bump_type, prerelease_token=self.prerelease_token)
         logger.info(f"💡 Update from {self.latest_version} with {bump_type} to {new_version}")
@@ -80,6 +84,14 @@ class SemverGit:  # pylint: disable=too-few-public-methods
 
         if dry_run:
             logger.warning("⚠️ Dry run (no tag set or pushed)")
+
+        if version_file:
+            logger.info(f"📝 Writing version to {version_file}...")
+            update_verion_file(version_file, new_version, dry_run)
+
+            if not commit_message:
+                # Upading the version file requires a commit message
+                auto_message = True
 
         if auto_message:
             commit_message = f"New version: {str(new_version)}"

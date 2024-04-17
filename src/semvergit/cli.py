@@ -19,6 +19,7 @@ def validate_bump_type(
         raise click.BadParameter(f"Please use {BumpType.print_options()}") from exp
 
 
+# pylint: disable=too-many-arguments
 @click.group(invoke_without_command=True, no_args_is_help=True)
 @click.version_option()
 @click.option("--dry_run", "-d", is_flag=True, help="Dry run", default=False)
@@ -33,9 +34,25 @@ def validate_bump_type(
 )
 @click.option("message", "--message", "-m", envvar="COMMIT_MESSAGE", help="Commit message", default=None)
 @click.option("auto_message", "--auto_message", "-am", is_flag=True, help="Auto commit message", default=False)
-def cli(bump_type: str, verbose: int, dry_run: bool, message: Optional[str], auto_message: bool) -> None:
+@click.option(
+    "version_file",
+    "-f",
+    envvar="VERSION_FILE",
+    help="Version file",
+    default=None,
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, resolve_path=True, readable=True, writable=True),
+)
+def cli(
+    bump_type: str, verbose: int, dry_run: bool, message: Optional[str], auto_message: bool, version_file: str
+) -> None:
     """CLI for semvergit."""
     set_logger(log_level=LogLevel(verbose))
     svg = SemverGit()
-    svg.update(bump_type=bump_type, dry_run=dry_run, commit_message=message, auto_message=auto_message)
+    svg.update(
+        bump_type=bump_type,
+        dry_run=dry_run,
+        commit_message=message,
+        auto_message=auto_message,
+        version_file=version_file,
+    )
     sys.exit(0)

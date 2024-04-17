@@ -45,10 +45,40 @@ def update_version(repodirname: str, version_type: str, target_version: str) -> 
     assert result == target_version
 
 
+def update_version_file(repodirname: str, version_type: str, target_version: str, version_file: str) -> None:
+    """Run the semvergit command to update the version on file."""
+    result, logs = run_command(
+        f"semvergit -v -t {version_type} -f {version_file}", repodirname, "Created a new version (in file)"
+    )
+    print(logs, end="")
+    assert result == target_version
+
+
+def update_version_file_custom(
+    repodirname: str, version_type: str, target_version: str, version_file: str, custom_message: str
+) -> None:
+    """Run the semvergit command to update the version on file with custom message."""
+    result, logs = run_command(
+        f'semvergit -v -t {version_type} -f {version_file} -m "{custom_message}"',
+        repodirname,
+        "Created a new version (in file)",
+    )
+    print(logs, end="")
+    assert result == target_version
+
+
 def set_credentials(repodirname: str) -> None:
     """Set the git credentials for the repository."""
     run_command("git config user.email 'test@test'", repodirname, "Set user email")
     run_command("git config user.name 'Test User'", repodirname, "Set user name")
+
+
+def check_file_content(filename: str, repodirname: str, expected: str) -> None:
+    """Check the content of a file."""
+    with open(repodirname + "/" + filename, "r", encoding="utf-8") as f:
+        file_content = f.read()
+        print(f"File content:\n{file_content}")
+        assert expected in file_content
 
 
 class TestIntegration:
@@ -134,3 +164,18 @@ class TestIntegration:
         check_git_log(self.clonedirname, "Added test5.txt")
         update_version(self.clonedirname, "patch", "v1.1.1")
         check_git_log(self.clonedirname, "v1.1.1")
+
+    def test_integration_version_file(self) -> None:
+        """Test the integration of the semvergit package with a version file."""
+        add_file_to_repo("test.txt", self.clonedirname, "Hello, World!")
+        add_file_to_repo("version.txt", self.clonedirname, "0.0.0")
+        check_file_content("version.txt", self.clonedirname, "0.0.0")
+        check_git_log(self.clonedirname, "Added test.txt")
+        check_git_log(self.clonedirname, "Added version.txt")
+        update_version_file(self.clonedirname, "patch", "v0.0.1", "version.txt")
+        check_file_content("version.txt", self.clonedirname, "0.0.1")
+        add_file_to_repo("test2.txt", self.clonedirname, "New content")
+        check_git_log(self.clonedirname, "Added test2.txt")
+        update_version_file_custom(self.clonedirname, "minor", "v0.1.0", "version.txt", "Updated version to 0.1.0")
+        check_file_content("version.txt", self.clonedirname, "0.1.0")
+        check_git_log(self.clonedirname, "0.1.0")

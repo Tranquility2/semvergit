@@ -31,16 +31,15 @@ Please keep in mind it is designed to be used in a CI/CD pipeline (but not limit
 Simple install using
 ``pip install semvergit``
 
-Then you can use it in your project like this:
-``semvergit -t patch -v -am``
+Then you can use it in your project as simply as:
+``semvergit -t patch -v``
 (to bump the patch version)
 This will:
 
-1. create a tag
+1. create the relvant tag (in this case a patch bump 0.0.x -> 0.0.x+1)
 2. push it to the remote
-3. commit all changes
 
-Please cehckout ``semvergit --help`` for more info.
+Please checkout ``semvergit --help`` for more info.
 
 ```shell
 Usage: semvergit [OPTIONS] COMMAND [ARGS]...
@@ -50,10 +49,11 @@ Usage: semvergit [OPTIONS] COMMAND [ARGS]...
 Options:
   --version             Show the version and exit.
   -d, --dry_run         Dry run
-  -v, --verbose         Verbose  [0<=x<=2]
+  -v, --verbose         Verbose level  [0<=x<=2]
   -t, --bump_type TEXT  Bump Type ['major', 'minor', 'patch', 'prerelease']
   -m, --message TEXT    Commit message
   -am, --auto_message   Auto commit message
+  -f FILE               Version file
   --help                Show this message and exit.
 ```
 

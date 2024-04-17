@@ -1,6 +1,6 @@
 """Test app."""
 
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 from pytest import CaptureFixture, LogCaptureFixture, mark
 from semver import VersionInfo
@@ -83,14 +83,22 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
         (None, False),
     ],
 )
-# type: ignore[no-untyped-def]
+@mark.parametrize(
+    "version_file",
+    [
+        "test_version_file",
+        None,
+    ],
+)
 def test_app_no_versions_update(  # pylint: disable=too-many-arguments
     bump_type: str,
     expected_version: VersionInfo,
     dry_run: bool,
     commit_message: Optional[str],
     auto_message: bool,
-    mock_get_tags_empty,  # pylint: disable=unused-argument
+    version_file: str,
+    mock_get_tags_empty: Callable,  # pylint: disable=unused-argument
+    mock_update_verion_file: Callable,  # pylint: disable=unused-argument
 ) -> None:
     """Test app with no versions."""
     svg = SemverGit()
@@ -98,7 +106,9 @@ def test_app_no_versions_update(  # pylint: disable=too-many-arguments
     assert svg.branch.name == "test_branch"
     assert svg.versions == []
     assert svg.latest_version == VersionInfo(0, 0, 0)
-    new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
+    new_version = svg.update(
+        bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message, version_file=version_file
+    )
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert new_version == expected_tag_str
 
@@ -135,18 +145,29 @@ def check_substring(substring_match: str, strings_list: List[str]) -> bool:
         (None, False),
     ],
 )
+@mark.parametrize(
+    "version_file",
+    [
+        "test_version_file",
+        None,
+    ],
+)
 def test_app_update(  # pylint: disable=too-many-arguments
     caplog: LogCaptureFixture,
+    mock_update_verion_file: Callable,  # pylint: disable=unused-argument
     bump_type: str,
     expected_version: VersionInfo,
     dry_run: bool,
     commit_message: Optional[str],
     auto_message: bool,
+    version_file: str,
     capsys: CaptureFixture,
 ) -> None:
     """Test app."""
     svg = SemverGit()
-    new_version = svg.update(bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message)
+    new_version = svg.update(
+        bump_type, dry_run=dry_run, commit_message=commit_message, auto_message=auto_message, version_file=version_file
+    )
 
     expected_tag_str = f"{svg.version_prefix}{str(expected_version)}"
     assert f"Created mock-set-tag-{expected_tag_str}" in caplog.messages
@@ -154,6 +175,10 @@ def test_app_update(  # pylint: disable=too-many-arguments
         assert check_substring("Committing...", caplog.messages)
     if dry_run:
         assert check_substring("Dry run (no tag set or pushed)", caplog.messages)
+    if version_file:
+        assert check_substring(f"Writing version to {version_file}...", caplog.messages)
+        if not commit_message:
+            assert check_substring("Committing...", caplog.messages)
     assert check_substring("Pushing...", caplog.messages)
     assert capsys.readouterr().out == expected_tag_str
     assert new_version == expected_tag_str
