@@ -47,14 +47,14 @@ Usage: semvergit [OPTIONS] COMMAND [ARGS]...
   CLI for semvergit.
 
 Options:
-  --version             Show the version and exit.
-  -d, --dry_run         Dry run
-  -v, --verbose         Verbose level  [0<=x<=2]
-  -t, --bump_type TEXT  Bump Type ['major', 'minor', 'patch', 'prerelease']
-  -m, --message TEXT    Commit message
-  -am, --auto_message   Auto commit message
-  -f FILE               Version file
-  --help                Show this message and exit.
+  --version                Show the version and exit.
+  -d, --dry_run            Dry run
+  -v, --verbose            Verbose level  [0<=x<=2]
+  -t, --bump_type TEXT     Bump Type ['major', 'minor', 'patch', 'prerelease']
+  -m, --message TEXT       Commit message
+  -am, --auto_message      Auto commit message
+  -f, --version_file FILE  Version file
+  --help                   Show this message and exit.
 ```
 
 ## Development
