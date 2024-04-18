@@ -24,6 +24,18 @@ ___What's actully happening when you run this tool___
 3. Create a new git tag
 4. Push the tag to the remote
 
+## Why?
+I created this tool to help me manage my project's version numbers.
+I wanted a simple tool that I could use in my CI/CD pipeline to bump the version number and tag the commit.
+
+## Features
+❇️ Bump the version number and update the git tag in one command
+❇️ Dry run mode
+❇️ Verbose mode
+❇️ Custom commit message
+❇️ Auto commit message
+🆕 Version 0.4+ introduces the ability to automatically update the version number in a file
+
 Please keep in mind it is designed to be used in a CI/CD pipeline (but not limited to...)
 
 ## How to use
@@ -47,14 +59,14 @@ Usage: semvergit [OPTIONS] COMMAND [ARGS]...
   CLI for semvergit.
 
 Options:
-  --version             Show the version and exit.
-  -d, --dry_run         Dry run
-  -v, --verbose         Verbose level  [0<=x<=2]
-  -t, --bump_type TEXT  Bump Type ['major', 'minor', 'patch', 'prerelease']
-  -m, --message TEXT    Commit message
-  -am, --auto_message   Auto commit message
-  -f FILE               Version file
-  --help                Show this message and exit.
+  --version                Show the version and exit.
+  -d, --dry_run            Dry run
+  -v, --verbose            Verbose level  [0<=x<=2]
+  -t, --bump_type TEXT     Bump Type ['major', 'minor', 'patch', 'prerelease']
+  -m, --message TEXT       Commit message
+  -am, --auto_message      Auto commit message
+  -f, --version_file FILE  Version file
+  --help                   Show this message and exit.
 ```
 
 ## Development

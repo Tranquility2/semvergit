@@ -26,10 +26,6 @@ check-isort:
 
 check-format: | check-black check-isort
 
-fix-format:
-	python3 -m black .
-	python3 -m isort .
-
 check-lint:
 	python3 -m pylint --reports=True --recursive=y .
 

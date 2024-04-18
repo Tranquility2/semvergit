@@ -35,7 +35,7 @@ def validate_bump_type(
 @click.option("message", "--message", "-m", envvar="COMMIT_MESSAGE", help="Commit message", default=None)
 @click.option("auto_message", "--auto_message", "-am", is_flag=True, help="Auto commit message", default=False)
 @click.option(
-    "version_file",
+    "--version_file",
     "-f",
     envvar="VERSION_FILE",
     help="Version file",
