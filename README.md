@@ -32,11 +32,11 @@ I wanted a simple tool that I could use in my CI/CD pipeline to bump the version
 ❇️ Bump the version number and update the git tag in one command  
 ❇️ Dry run mode  
 ❇️ Verbose mode  
-❇️ Custom commit message  
-❇️ Auto commit message  
-🆕 Version 0.4+ introduces the ability to automatically update the version number in a file  
+❇️ Custom commit message*  
+❇️ Auto commit message*  
+🆕 Version 0.4+ introduces the ability to automatically update the version number in a file*
 
-Please keep in mind it is designed to be used in a CI/CD pipeline (but not limited to...)
+<sup>*Please see the [limitations](#Limitations) section below</sup>
 
 ## How to use
 
@@ -68,6 +68,13 @@ Options:
   -f, --version_file FILE  Version file
   --help                   Show this message and exit.
 ```
+
+## Limitations
+Please keep in mind that when using features like `commit message` / `auto commit message` and `version file` the tool will try and commit the changes to the git repo.
+
+Even though this is quite handy, it should be used mannually.. as it **cannot be used directly in a CI/CD pipeline directed at `master` or `main` branches** as it will likly fail due to the commit not being allowed without a PR.
+
+💡 Only git tags can be pushed to the remote without a PR *(and this is the main use case for this tool)*.
 
 ## Development
 
