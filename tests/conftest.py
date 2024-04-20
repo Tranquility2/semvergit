@@ -110,6 +110,16 @@ def mock_new_commit(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("semvergit.app.new_commit", new_commit)
 
 
+@pytest.fixture(autouse=True)
+def mock_add_file(monkeypatch: MonkeyPatch) -> None:
+    """Mock add_file."""
+
+    def add_file(repo: Repo, file_path: str, dry_run: bool) -> None:  # pylint: disable=unused-argument
+        pass
+
+    monkeypatch.setattr("semvergit.app.add_file", add_file)
+
+
 @pytest.fixture()
 def mock_update_verion_file(monkeypatch: MonkeyPatch) -> None:
     """Mock update_verion_file."""
