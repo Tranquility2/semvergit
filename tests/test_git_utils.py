@@ -8,6 +8,7 @@ from git import Repo
 from pytest import MonkeyPatch, mark
 
 from semvergit.git_utils import (
+    add_file,
     drywrap,
     get_active_branch,
     get_repo,
@@ -145,6 +146,23 @@ def test_new_commit() -> None:
     MonkeyPatch().setattr("semvergit.git_utils.Repo.index", MockIndex)
     result = new_commit(test_repo, "testmessage")
     assert result == "112233"
+
+
+def test_add_file() -> None:
+    """Test add_file."""
+
+    class MockIndex:  # pylint: disable=too-few-public-methods
+        """Mock index."""
+
+        @staticmethod
+        def add(files: List[str]) -> None:  # pylint: disable=unused-argument
+            """Add."""
+            pass  # pylint: disable=unnecessary-pass
+
+    test_repo = Repo()
+
+    MonkeyPatch().setattr("semvergit.git_utils.Repo.index", MockIndex)
+    add_file(test_repo, "testfile")
 
 
 def test_set_tag() -> None:

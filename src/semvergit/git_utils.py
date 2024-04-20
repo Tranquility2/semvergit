@@ -65,6 +65,13 @@ def new_commit(repo: Repo, message: str) -> str:
 
 
 @drywrap
+def add_file(repo: Repo, file_path: str) -> None:
+    """Add file."""
+    repo.index.add([file_path])
+    logger.debug(f"Added file {file_path}")
+
+
+@drywrap
 def set_tag(repo: Repo, tag: str) -> VersionInfo:
     """Set tag."""
     new_tag = repo.create_tag(tag)

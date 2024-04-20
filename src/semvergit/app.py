@@ -10,6 +10,7 @@ from semver import VersionInfo
 
 from semvergit.file_utils import update_verion_file
 from semvergit.git_utils import (
+    add_file,
     get_active_branch,
     get_repo,
     get_tags_with_prefix,
@@ -88,6 +89,7 @@ class SemverGit:  # pylint: disable=too-few-public-methods
         if version_file:
             logger.info(f"📝 Writing version to {version_file}...")
             update_verion_file(version_file, new_version, dry_run)
+            add_file(repo=self.current_repo, file_path=version_file, dry_run=dry_run)
 
             if not commit_message:
                 # Upading the version file requires a commit message
