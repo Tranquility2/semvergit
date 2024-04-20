@@ -72,7 +72,7 @@ Options:
 ## Limitations
 Please keep in mind that when using features like `commit message` / `auto commit message` and `version file` the tool will try and commit the changes to the git repo.
 
-Even though this is quite handy, it should be used mannually.. as it **cannot be used directly in a CI/CD pipeline directed at `master` or `main` branches** as it will likly fail due to the commit not being allowed without a PR.
+Even though this is quite handy, it should be used mannually as it **cannot be used directly in a CI/CD pipeline directed at `master` or `main` branches** as it will likly fail due to the commit not being allowed without a PR.
 
 💡 Only git tags can be pushed to the remote without a PR *(and this is the main use case for this tool)*.
 
