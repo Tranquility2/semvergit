@@ -6,7 +6,7 @@
 |||
 
 # semvergit
-![semvergit](assets/semvergit-255.png)
+![semvergit](https://raw.githubusercontent.com/Tranquility2/semvergit/master/assets/semvergit-255.png)
 
 semvergit is a CLI tool to manage your project's version numbers.
 It uses [Semantic Versioning](https://semver.org/) to bump the version number.
