@@ -4,7 +4,7 @@
 #
 #    pip-compile --annotation-style=line --output-file=requirements/requirements-dev.txt --strip-extras requirements/requirements-dev.in
 #
-astroid==3.2.0            # via pylint
+astroid==3.2.2            # via pylint
 bandit==1.7.8             # via -r requirements/requirements-dev.in
 black==24.4.2             # via -r requirements/requirements-dev.in
 cfgv==3.4.0               # via pre-commit
@@ -26,7 +26,7 @@ pbr==6.0.0                # via stevedore
 platformdirs==4.2.0       # via black, pylint, virtualenv
 pre-commit==3.5.0         # via -r requirements/requirements-dev.in
 pygments==2.17.2          # via rich
-pylint==3.2.0             # via -r requirements/requirements-dev.in
+pylint==3.2.2             # via -r requirements/requirements-dev.in
 pyyaml==6.0.1             # via bandit, pre-commit
 rich==13.7.1              # via bandit
 stevedore==5.2.0          # via bandit
