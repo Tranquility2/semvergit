@@ -17,7 +17,7 @@ isort==5.13.2             # via -r requirements/requirements-dev.in, pylint
 markdown-it-py==3.0.0     # via rich
 mccabe==0.7.0             # via pylint
 mdurl==0.1.2              # via markdown-it-py
-mypy==1.10.0              # via -r requirements/requirements-dev.in
+mypy==1.10.1              # via -r requirements/requirements-dev.in
 mypy-extensions==1.0.0    # via black, mypy
 nodeenv==1.8.0            # via pre-commit
 packaging==24.0           # via black
@@ -26,7 +26,7 @@ pbr==6.0.0                # via stevedore
 platformdirs==4.2.0       # via black, pylint, virtualenv
 pre-commit==3.5.0         # via -r requirements/requirements-dev.in
 pygments==2.17.2          # via rich
-pylint==3.2.3             # via -r requirements/requirements-dev.in
+pylint==3.2.4             # via -r requirements/requirements-dev.in
 pyyaml==6.0.1             # via bandit, pre-commit
 rich==13.7.1              # via bandit
 stevedore==5.2.0          # via bandit
