@@ -6,8 +6,8 @@
   - Mypy
 
   All are configured in the  Pyproject.toml file
-  Pre-commit hooks are configured  to run these tools  automatically on commit.
-  Please install them by running:  ``pre-commit install``
+  Pre-commit hooks are configured to run these tools automatically on commit.  
+  Please install please run:  ``pre-commit install``
 
   ### Testing
   Please use pytest for testing.  Run tests with ``make tests``.
