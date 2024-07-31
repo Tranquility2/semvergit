@@ -9,6 +9,6 @@ exceptiongroup==1.2.0     # via pytest
 iniconfig==2.0.0          # via pytest
 packaging==24.0           # via pytest
 pluggy==1.5.0             # via pytest
-pytest==8.2.2             # via -r requirements/requirements-test.in, pytest-cov
+pytest==8.3.2             # via -r requirements/requirements-test.in, pytest-cov
 pytest-cov==5.0.0         # via -r requirements/requirements-test.in
 tomli==2.0.1              # via coverage, pytest
