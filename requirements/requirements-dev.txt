@@ -33,7 +33,7 @@ stevedore==5.2.0          # via bandit
 tomli==2.0.1              # via bandit, black, mypy, pylint
 tomlkit==0.12.4           # via pylint
 typing-extensions==4.10.0  # via astroid, black, mypy, pylint, rich
-virtualenv==20.25.1       # via pre-commit
+virtualenv==20.26.6       # via pre-commit
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
