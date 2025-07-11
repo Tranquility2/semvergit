@@ -1,6 +1,6 @@
 |||
 |-|-|
-| CI/CD   | [![Pytest](https://github.com/Tranquility2/semvergit/actions/workflows/pytest.yml/badge.svg)](https://github.com/Tranquility2/semvergit/actions/workflows/pytest.yml) [![Publish](https://github.com/Tranquility2/semvergit/actions/workflows/publish.yml/badge.svg)](https://github.com/Tranquility2/semvergit/actions/workflows/publish.yml) ![GitHub Latest Release)](https://img.shields.io/github/v/release/Tranquility2/semvergit?logo=github) [![Coverage Status](https://coveralls.io/repos/github/Tranquility2/semvergit/badge.svg)](https://coveralls.io/github/Tranquility2/semvergit) [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)| 
+| CI/CD   | [![Pytest](https://github.com/Tranquility2/semvergit/actions/workflows/pytest.yml/badge.svg)](https://github.com/Tranquility2/semvergit/actions/workflows/pytest.yml) [![Publish](https://github.com/Tranquility2/semvergit/actions/workflows/publish.yml/badge.svg)](https://github.com/Tranquility2/semvergit/actions/workflows/publish.yml) ![GitHub Latest Release)](https://img.shields.io/github/v/release/Tranquility2/semvergit?logo=github) [![Coverage Status](https://coveralls.io/repos/github/Tranquility2/semvergit/badge.svg)](https://coveralls.io/github/Tranquility2/semvergit) [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)|
 | Package | [![PyPI - Version](https://img.shields.io/pypi/v/semvergit.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/semvergit/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semvergit.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/semvergit/) [![Downloads](https://img.shields.io/pypi/dm/semvergit.svg?logo=python&label=PyPI&logoColor=gold)](https://pepy.tech/project/semvergit) |
 | Meta    | [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit) [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/) [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint) [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/) [![License - MIT](https://img.shields.io/badge/license-MIT-9400d3.svg)](https://spdx.org/licenses/) |
 
@@ -28,17 +28,16 @@ I created this tool to help me manage my project's version numbers.
 I wanted a simple tool that I could use in my CI/CD pipeline to bump the version number and tag the commit.
 
 ## Features
-❇️ Bump the version number and update the git tag in one command  
-❇️ Dry run mode  
-❇️ Verbose mode  
-❇️ Custom commit message*  
-❇️ Auto commit message*  
+❇️ Bump the version number and update the git tag in one command
+❇️ Dry run mode
+❇️ Verbose mode
+❇️ Custom commit message*
+❇️ Auto commit message*
 🆕 Version 0.4+ introduces the ability to automatically update the version number in a file*
 
 <sup>*Please see the [limitations](#Limitations) section below</sup>
 
 ## How to use
-
 Simple install using
 ``pip install semvergit``
 
