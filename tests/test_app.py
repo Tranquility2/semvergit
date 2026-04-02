@@ -90,7 +90,7 @@ def test_app(pull_branch: bool, expected: VersionInfo) -> None:
         None,
     ],
 )
-def test_app_no_versions_update(  # pylint: disable=too-many-arguments
+def test_app_no_versions_update(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     bump_type: str,
     expected_version: VersionInfo,
     dry_run: bool,
@@ -152,7 +152,7 @@ def check_substring(substring_match: str, strings_list: List[str]) -> bool:
         None,
     ],
 )
-def test_app_update(  # pylint: disable=too-many-arguments
+def test_app_update(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     caplog: LogCaptureFixture,
     mock_update_verion_file: Callable,  # pylint: disable=unused-argument
     bump_type: str,

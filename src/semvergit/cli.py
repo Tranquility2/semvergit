@@ -42,7 +42,7 @@ def validate_bump_type(
     default=None,
     type=click.Path(exists=True, file_okay=True, dir_okay=False, resolve_path=True, readable=True, writable=True),
 )
-def cli(
+def cli(  # pylint: disable=too-many-positional-arguments
     bump_type: str, verbose: int, dry_run: bool, message: Optional[str], auto_message: bool, version_file: str
 ) -> None:
     """CLI for semvergit."""
