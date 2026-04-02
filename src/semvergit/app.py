@@ -74,7 +74,7 @@ class SemverGit:  # pylint: disable=too-few-public-methods
             return text[len(prefix) :]
         return text
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def update(
         self, bump_type: str, dry_run: bool, commit_message: Optional[str], auto_message: bool, version_file: str
     ) -> str:

@@ -65,3 +65,4 @@ dmypy.json
 
 # IDEs
 .idea/
+.vscode/
