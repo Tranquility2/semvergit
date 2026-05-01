@@ -10,7 +10,7 @@ iniconfig==2.3.0          # via pytest
 packaging==26.0           # via pytest
 pluggy==1.6.0             # via pytest, pytest-cov
 pygments==2.20.0          # via pytest
-pytest==9.0.2             # via -r requirements/requirements-test.in, pytest-cov
+pytest==9.0.3             # via -r requirements/requirements-test.in, pytest-cov
 pytest-cov==7.1.0         # via -r requirements/requirements-test.in
 tomli==2.4.1              # via coverage, pytest
 typing-extensions==4.15.0  # via exceptiongroup
