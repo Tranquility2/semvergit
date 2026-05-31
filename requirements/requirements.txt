@@ -6,7 +6,7 @@
 #
 click==8.3.1              # via semvergit (pyproject.toml)
 gitdb==4.0.12             # via gitpython
-gitpython==3.1.47         # via semvergit (pyproject.toml)
+gitpython==3.1.50         # via semvergit (pyproject.toml)
 loguru==0.7.3             # via semvergit (pyproject.toml)
 semver==3.0.4             # via semvergit (pyproject.toml)
 smmap==5.0.3              # via gitdb
