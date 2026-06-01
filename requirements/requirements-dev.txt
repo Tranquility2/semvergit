@@ -7,7 +7,7 @@
 ast-serialize==0.5.0      # via mypy
 astroid==4.0.4            # via pylint
 bandit==1.9.4             # via -r requirements/requirements-dev.in
-black==26.5.0             # via -r requirements/requirements-dev.in
+black==26.5.1             # via -r requirements/requirements-dev.in
 cfgv==3.5.0               # via pre-commit
 click==8.3.1              # via -c requirements/requirements.txt, black
 dill==0.4.1               # via pylint
