@@ -27,7 +27,7 @@ pathspec==1.0.4           # via black, mypy
 platformdirs==4.9.4       # via black, pylint, python-discovery, virtualenv
 pre-commit==4.6.0         # via -r requirements/requirements-dev.in
 pygments==2.20.0          # via rich
-pylint==4.0.5             # via -r requirements/requirements-dev.in
+pylint==4.0.6             # via -r requirements/requirements-dev.in
 python-discovery==1.2.1   # via virtualenv
 pytokens==0.4.1           # via black
 pyyaml==6.0.3             # via bandit, pre-commit
